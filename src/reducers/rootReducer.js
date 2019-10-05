@@ -1,8 +1,32 @@
-import { combineReducers } from 'redux';
-import authReducers from './authReducers';
-import createRoom from './createRoom';
+let initialState = {
+	rooms: [],
+	isAuth: false,
+	user: {}
+};
 
-export default combineReducers({
-	authReducers,
-	createRoom
-});
+const mainReducer = async (state = initialState, action) => {
+	const { type, payload } = action;
+	switch (type) {
+		case 'CREATE_ROOM':
+			return {
+				...state,
+				rooms: []
+			};
+		case 'FETCH_ROOMS':
+			return {
+				...state,
+				rooms: [...payload]
+			};
+		case 'FETCH_ROOM_INFO':
+			console.log(payload);
+
+			return {
+				...state
+			};
+		default: {
+			return initialState;
+		}
+	}
+};
+
+export default mainReducer;

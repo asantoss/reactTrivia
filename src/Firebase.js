@@ -35,8 +35,20 @@ class Firebase {
 	doAddRoom = async (roomName, hostUser) => {
 		console.log('ruuning');
 		await this.database.collection('rooms').add({
-			name: roomName
+			name: roomName.toLowerCase()
 		});
+	};
+	doMatchRoomInfo = async roomId => {
+		const snapShot = await this.database
+			.collection('rooms')
+			.doc(roomId)
+			.get();
+		return snapShot.data();
+	};
+
+	doFetchRooms = async () => {
+		const rooms = await this.database.collection('rooms').get();
+		console.log(rooms.docs.map(doc => doc.data()));
 	};
 }
 const App = new Firebase();
