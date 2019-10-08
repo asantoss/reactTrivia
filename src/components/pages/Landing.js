@@ -25,18 +25,23 @@ export default function Landing(props) {
 					<Input onChange={e => setstate(e.target.value)} type='text' placeholder='Create a Room' />
 
 					<Button onClick={() => setRedirect(!redirect)}>Create</Button>
+
 				</DivInput>
 
 				<br />
+
 				<DivInput>
 
 
 					<Input onChange={e => setstate(e.target.value)} type='text' placeholder='Join a Room' />
 
 					<Button onClick={() => setRedirect(!redirect)}>Join  </Button>
+
 				</DivInput>
 
 			</DivContainer>
+
+
 
 
 		</ThemeProvider>
@@ -79,6 +84,7 @@ const H1 = styled.h1`
 `
 
 const Button = styled.button`
+
 	text-transform: uppercase;
   font-size: 11px;
 	font-weight: 600;
