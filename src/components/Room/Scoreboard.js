@@ -4,7 +4,7 @@ export default function Scoreboard({ users }) {
 	return (
 		<div>
 			{users.map((user, i) => {
-				const { name, id, score } = user;
+				const { name, score } = user;
 				return (
 					<div key={i}>
 						<h1>{name}</h1>

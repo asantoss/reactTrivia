@@ -32,12 +32,11 @@ class Firebase {
 
 	// *** Database API ***
 
-	doAddRoom = async (roomName, hostUser) => {
+	doCreateRoom = async (roomName, hostUser) => {
 		const room = await this.database.collection('rooms').doc();
 		room.collection('users').add({ ...hostUser });
 		await room.set({ name: roomName, host: { ...hostUser } });
-		console.log(await room.get());
-		// return room.id;
+		return room.id;
 	};
 	doMatchRoomInfo = async roomId => {
 		const snapShot = await this.database
@@ -80,17 +79,6 @@ class Firebase {
 		const rooms = await this.database.collection('rooms').get();
 		console.log(rooms.docs.map(doc => doc.data()));
 	};
-	doDataListener = async (request, roomInfo) => {
-		const { roomId, doc } = roomInfo;
-		if (doc === 'room') {
-			return this.database
-				.collection('rooms')
-				.doc(roomId)
-				.collection(doc);
-		} else {
-			return this.database.collection('rooms').doc(roomId);
-		}
-	};
 	doUpdateUser = async ({ roomId, userId, payload } = {}) => {
 		this.database
 			.collection('rooms')
@@ -100,6 +88,5 @@ class Firebase {
 			.update({ ...payload });
 	};
 }
-const App = new Firebase();
 
-export default App;
+export default Firebase;

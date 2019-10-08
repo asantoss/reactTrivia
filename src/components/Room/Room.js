@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import fireBase from '../../Firebase';
 import { connect } from 'react-redux';
 import Scoreboard from './Scoreboard';
 import Question from './Question';
+import { withFirebase } from '../firebase';
 
 class Room extends Component {
 	constructor(props) {
@@ -14,14 +14,15 @@ class Room extends Component {
 		};
 	}
 	componentDidMount() {
-		fireBase.doAddRoom('Party room', this.props.user);
+		const { fireBase } = this.props;
 		const { id: roomId } = this.props.match.params;
-		fireBase.doMatchRoomInfo(roomId).then(snapshot => {
-			this.setState(prevState => ({
-				...prevState,
-				...snapshot
-			}));
-		});
+		debugger;
+		// fireBase.doMatchRoomInfo(roomId).then(snapshot => {
+		// 	this.setState(prevState => ({
+		// 		...prevState,
+		// 		...snapshot
+		// 	}));
+		// });
 		// *** Room data listener for updating currentQuestion.
 		fireBase.database
 			.collection('rooms')
@@ -41,6 +42,7 @@ class Room extends Component {
 	}
 
 	handleScore = () => {
+		const { fireBase } = this.props;
 		const { id: roomId } = this.props.match.params;
 		const { id: userId, score } = this.props.user;
 		debugger;
@@ -52,11 +54,10 @@ class Room extends Component {
 		});
 	};
 	render() {
-		const { match } = this.props;
 		return (
 			<div>
-				<h1>{this.state.name}</h1>
-				<h1>{this.state.currentQuestion}?</h1>
+				{/* <h1>{this.state.name}</h1>
+				{/* <h1>{this.state.currentQuestion}?</h1> */}
 				{/* <Question question={this.state.currentQuestion} /> */}
 				<Scoreboard users={this.state.users} />
 				<button onClick={this.handleScore}>Hello</button>
@@ -64,17 +65,4 @@ class Room extends Component {
 		);
 	}
 }
-
-const mapState = ({ ...state } = {}) => ({
-	...state
-});
-const mapDispatch = dispatch => ({
-	playerScore: () => {
-		dispatch({ type: 'PLAYER_SCORE' });
-	}
-});
-
-export default connect(
-	mapState,
-	mapDispatch
-)(Room);
+export default withFirebase(Room);
