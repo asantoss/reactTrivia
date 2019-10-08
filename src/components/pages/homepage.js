@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { ThemeProvider } from "styled-components";
 import { Form, Input, Button, StyledimgC, StyledImg, Container, Cancelbtn, Span } from './form'
 
@@ -11,6 +11,9 @@ class Home extends Component {
 
     render() {
 
+        const [user, setUser] = useState('');
+        const [password, setPassword] = useState('');
+
         const theme = {
             font: "Arial"
         }
@@ -22,16 +25,16 @@ class Home extends Component {
                     </StyledimgC>
 
                     <Container>
-                        <label htmlFor="uname"><b>Username</b></label>
-                        <Input type="text" placeholder="Enter Username" name="unname" required />
+                        <label htmlFor="user"><b>Username</b></label>
+                        <Input type="text" placeholder="Enter Username" onchange={e => setUser(e.target.value)} value={user} required />
 
-                        <label htmlFor="psw"><b>Password</b></label>
-                        <Input type="password" placeholder="Enter Password" name="psw" required />
+                        <label htmlFor="password"><b>Password</b></label>
+                        <Input type="password" placeholder="Enter Password" value={password} onChange={e => setPassword(e.target.value)} required />
 
                         <Button type="submit">Login</Button>
                         <label>
                             <Input type="checkbox" checked="checked" name="remember" /> Remember me
-                    </label>
+                        </label>
                     </Container>
                     <Container>
                         <Cancelbtn type="button">Cancel</Cancelbtn>
