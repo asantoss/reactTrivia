@@ -17,12 +17,6 @@ class Room extends Component {
 		const { fireBase } = this.props;
 		const { id: roomId } = this.props.match.params;
 		debugger;
-		// fireBase.doMatchRoomInfo(roomId).then(snapshot => {
-		// 	this.setState(prevState => ({
-		// 		...prevState,
-		// 		...snapshot
-		// 	}));
-		// });
 		// *** Room data listener for updating currentQuestion.
 		fireBase.database
 			.collection('rooms')
