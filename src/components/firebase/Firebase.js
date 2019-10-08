@@ -21,11 +21,11 @@ class Firebase {
 	// *** Auth API ***
 
 	doCreateUserWithEmailAndPassword = (email, password) => {
-		this.auth.createUserWithEmailAndPassword(email, password);
+		return this.auth.createUserWithEmailAndPassword(email, password);
 	};
 
 	doSignInWithEmailAndPassword = (email, password) => {
-		this.auth.signInWithEmailAndPassword(email, password);
+		return this.auth.signInWithEmailAndPassword(email, password);
 	};
 
 	doSignOut = () => this.auth.signOut();
@@ -56,7 +56,6 @@ class Firebase {
 		};
 	};
 	doAddUserToRoom = async (roomId, user) => {
-		const { id, name } = user;
 		await this.database
 			.collection('rooms')
 			.doc(roomId)
