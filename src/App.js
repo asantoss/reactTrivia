@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Landing from './components/pages/Landing';
 import Room from './components/containers/RoomContainer';
 import Firebase, { FirebaseContext } from './components/firebase';
+import Scoreboard from './components/Room/Scoreboard';
 // import CreateRoomForm from './components/Room/CreateRoomForm';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
 					<NavBar />
 					<Route path='/rooms/:id' component={Room} />
 					<Route exact path='/' component={Landing} />
+					<Route exact path='/scoreboard' component={Scoreboard} />
 				</div>
 			</Router>
 		</FirebaseContext.Provider>
