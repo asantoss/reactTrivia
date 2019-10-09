@@ -34,14 +34,16 @@ class SignUp extends Component {
 	};
 
 	handleSignIn = e => {
-		const { email, password, authenticateUser } = this.state;
-		const { fireBase } = this.props;
+		const { email, password } = this.state;
+		const { fireBase, authenticateUser } = this.props;
 		e.preventDefault();
 		fireBase.doSignInWithEmailAndPassword(email, password).then(user => {
+			debugger;
 			authenticateUser({
 				id: user.uid,
 				name: user.displayName
 			});
+			debugger;
 		});
 	};
 

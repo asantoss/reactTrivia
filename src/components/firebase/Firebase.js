@@ -24,8 +24,12 @@ class Firebase {
 		await this.auth.createUserWithEmailAndPassword(email, password);
 	};
 
-	doSignInWithEmailAndPassword = (email, password) => {
-		return this.auth.signInWithEmailAndPassword(email, password);
+	doSignInWithEmailAndPassword = async (email, password) => {
+		const response = await this.auth.signInWithEmailAndPassword(
+			email,
+			password
+		);
+		return response.user;
 	};
 
 	doSignOut = () => this.auth.signOut();
