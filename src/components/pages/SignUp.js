@@ -38,12 +38,10 @@ class SignUp extends Component {
 		const { fireBase, authenticateUser } = this.props;
 		e.preventDefault();
 		fireBase.doSignInWithEmailAndPassword(email, password).then(user => {
-			debugger;
 			authenticateUser({
 				id: user.uid,
 				name: user.displayName
 			});
-			debugger;
 		});
 	};
 
@@ -59,10 +57,7 @@ class SignUp extends Component {
 		const isSignUp = this.props.match.url === '/signup';
 		return (
 			<ThemeProvider theme={theme}>
-				<Form
-					onSubmit={e =>
-						isSignUp ? this.handleSignUp(e) : this.handleSignIn(e)
-					}>
+				<Form onSubmit={isSignUp ? this.handleSignUp : this.handleSignIn}>
 					<StyledimgC>
 						<StyledImg src='triviaimg.png' alt='Trivia' />
 					</StyledimgC>
@@ -75,7 +70,6 @@ class SignUp extends Component {
 									? 'Display Name'
 									: capitalizeWord(stateKey);
 							if (!isSignUp && stateKey === 'displayName') return null;
-
 							return (
 								<div key={i}>
 									<label htmlFor={stateKey}>
