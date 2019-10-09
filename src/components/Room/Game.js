@@ -3,13 +3,26 @@ import styled from 'styled-components';
 
 export default class Game extends Component {
 	render() {
-		return <div></div>;
+		const nums = new Array(10);
+		return (
+			<GameContainer>
+				<div className='item'>item</div>
+				<div className='item'>item</div>
+				<div className='item'>item</div>
+				<div className='item'>item</div>
+				<div className='item'>item</div>
+				<div className='item'>item</div>
+			</GameContainer>
+		);
 	}
 }
 
-
-const GameContainer= styled.div`
-	
-
-
-`
+const GameContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr;
+	width: 100vw;
+	height: 80vh;
+	.item {
+	}
+`;
