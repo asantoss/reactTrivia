@@ -9,13 +9,15 @@ const matchStatetoProps = state => {
 
 const matchDispatchtoProps = dispatch => {
 	return {
-		authenticateUser: payload => ({
-			type: 'LOGIN',
-			payload: {
-				...payload,
-				isLoggedIn: true
-			}
-		})
+		authenticateUser: payload => {
+			dispatch({
+				type: 'LOGIN',
+				payload: {
+					...payload,
+					isLoggedIn: true
+				}
+			});
+		}
 	};
 };
 
