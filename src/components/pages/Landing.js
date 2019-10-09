@@ -11,7 +11,7 @@ export default function Landing(props) {
 
 	const createRoom = () => {
 		fireBase
-			.doCreateRoom({ name: state }, { user: 'Juan', id: 456, score: 0 })
+			.doCreateRoom(state, { name: 'Juan', id: 456, score: 0 })
 			.then(res => {
 				debugger;
 				setRoomId(res);
@@ -28,7 +28,6 @@ export default function Landing(props) {
 						type='text'
 						placeholder='Create a Room'
 					/>
-
 					<Button onClick={createRoom}>Create</Button>
 				</DivInput>
 
@@ -46,7 +45,7 @@ export default function Landing(props) {
 			</DivContainer>
 		</ThemeProvider>
 	) : (
-		<Redirect to={`/room/${roomId}`} />
+		<Redirect to={`/rooms/${roomId}`} />
 	);
 }
 

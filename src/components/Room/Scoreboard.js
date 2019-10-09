@@ -1,54 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function Scoreboard(props) {
-	const users = [
-		{
-			name: 'Juanito',
-			id: 768763242,
-			score: 98
-		},
-		{
-			name: 'Juanito',
-			id: 768763242,
-			score: 98
-		},
-		{
-			name: 'Juanito',
-			id: 768763242,
-			score: 98
-		},
-		{
-			name: 'Juanito',
-			id: 768763242,
-			score: 98
-		},
-		{
-			name: 'Juanito',
-			id: 768763242,
-			score: 98
-		},
-		{
-			name: 'Juanito',
-			id: 768763242,
-			score: 98
-		},
-		{
-			name: 'Juanito',
-			id: 768763242,
-			score: 98
-		},
-		{
-			name: 'Juanito',
-			id: 768763242,
-			score: 98
-		},
-		{
-			name: 'Juanito',
-			id: 768763242,
-			score: 98
-		}
-	];
+export default function Scoreboard({ users }) {
 	return (
 		<div>
 			{users.map((user, i) => {

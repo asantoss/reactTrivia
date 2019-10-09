@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Scoreboard from './Scoreboard';
-import Question from './Question';
+import Question from './Game';
 import { withFirebase } from '../firebase';
 
 class Room extends Component {
@@ -16,7 +16,6 @@ class Room extends Component {
 	componentDidMount() {
 		const { fireBase } = this.props;
 		const { id: roomId } = this.props.match.params;
-		debugger;
 		// *** Room data listener for updating currentQuestion.
 		fireBase.database
 			.collection('rooms')
@@ -50,7 +49,8 @@ class Room extends Component {
 	render() {
 		return (
 			<div>
-				{/* <h1>{this.state.name}</h1>
+				<h1>{this.state.name}</h1>
+				{this.state.shortUrl && <h2>{this.state.shortUrl}</h2>}
 				{/* <h1>{this.state.currentQuestion}?</h1> */}
 				{/* <Question question={this.state.currentQuestion} /> */}
 				<Scoreboard users={this.state.users} />

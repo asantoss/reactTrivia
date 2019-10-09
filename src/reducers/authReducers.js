@@ -14,7 +14,12 @@ export default function(state = initialState, action) {
 				...payload
 			};
 		case 'LOGOUT':
-			return {};
+			return {
+				name: '',
+				id: '',
+				isLoggedIn: false,
+				score: 0
+			};
 		default:
 			return state;
 	}

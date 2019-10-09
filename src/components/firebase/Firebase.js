@@ -12,6 +12,11 @@ const firebaseConfig = {
 	measurementId: 'G-NXHTNH66CH'
 };
 
+const urlPath =
+	process.env.NODE_ENV !== 'production'
+		? 'http://www.google.com'
+		: 'triviaGame.com';
+
 class Firebase {
 	constructor() {
 		app.initializeApp(firebaseConfig);
@@ -35,7 +40,11 @@ class Firebase {
 	doCreateRoom = async (roomName, hostUser) => {
 		const room = await this.database.collection('rooms').doc();
 		room.collection('users').add({ ...hostUser });
-		await room.set({ name: roomName, host: { ...hostUser } });
+		await room.set({
+			roomName: roomName,
+			host: { ...hostUser },
+			url: `${urlPath}`
+		});
 		return room.id;
 	};
 	doMatchRoomInfo = async roomId => {
