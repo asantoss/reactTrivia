@@ -39,6 +39,7 @@ class Home extends Component {
 		const theme = {
 			font: 'Arial'
 		};
+
 		return (
 			<ThemeProvider theme={theme}>
 				<Form onSubmit={e => this.onSubmit(e)}>

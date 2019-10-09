@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
-import {
-	Form,
-	Input,
-	Button,
-	StyledimgC,
-	StyledImg,
-	Container,
-	Cancelbtn,
-	Span
-} from './form';
+import { Form, Input, Button, StyledimgC, StyledImg, Container } from './form';
 import { withFirebase } from '../firebase';
+import { firestore } from 'firebase';
 
 class SignUp extends Component {
 	constructor(props) {
@@ -23,7 +15,7 @@ class SignUp extends Component {
 		};
 	}
 
-	onSubmit = e => {
+	handleSignUp = e => {
 		const { email, password, displayName } = this.state;
 		e.preventDefault();
 		this.props.fireBase
@@ -41,6 +33,18 @@ class SignUp extends Component {
 			});
 	};
 
+	handleSignIn = e => {
+		const { email, password, authenticateUser } = this.state;
+		const { fireBase } = this.props;
+		e.preventDefault();
+		fireBase.doSignInWithEmailAndPassword(email, password).then(user => {
+			authenticateUser({
+				id: user.uid,
+				name: user.displayName
+			});
+		});
+	};
+
 	handleChange = event => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
@@ -49,28 +53,35 @@ class SignUp extends Component {
 		const theme = {
 			font: 'Arial'
 		};
-
+		//Checks to see if it is the signup page in the URL and sets isSignup : true or false
+		const isSignUp = this.props.match.url === '/signup';
 		return (
 			<ThemeProvider theme={theme}>
-				<Form onSubmit={e => this.onSubmit(e)}>
+				<Form
+					onSubmit={e =>
+						isSignUp ? this.handleSignUp(e) : this.handleSignIn(e)
+					}>
 					<StyledimgC>
 						<StyledImg src='triviaimg.png' alt='Trivia' />
 					</StyledimgC>
 
 					<Container>
-						{Object.keys(this.state).map((stateKey, i) => {
+						{//Create an array from all of the keys in state
+						Object.keys(this.state).map((stateKey, i) => {
+							const keyCapitalized =
+								stateKey === 'displayName'
+									? 'Display Name'
+									: capitalizeWord(stateKey);
+							if (!isSignUp && stateKey === 'displayName') return null;
+
 							return (
 								<div key={i}>
 									<label htmlFor={stateKey}>
-										<b>
-											{stateKey === 'displayName'
-												? 'Display Name'
-												: stateKey.charAt(0).toUpperCase() + stateKey.slice(1)}
-										</b>
+										<b>{keyCapitalized}</b>
 									</label>
 									<Input
 										type={stateKey === 'password' ? 'password' : 'text'}
-										placeholder={`Enter ${stateKey}`}
+										placeholder={`Enter ${keyCapitalized}`}
 										name={stateKey}
 										onChange={e => this.handleChange(e)}
 										value={this.state[stateKey]}
@@ -81,21 +92,27 @@ class SignUp extends Component {
 						})}
 						<div>
 							<Button type='submit'>Sign Up</Button>
-							<label>
-								<Input
-									type='checkbox'
-									checked={true}
-									onChange={e => (e.target.checked = !e.target.checked)}
-									name='remember'
-								/>{' '}
-								Remember me
-							</label>
+							{isSignUp && (
+								<label>
+									<Input
+										type='checkbox'
+										defaultChecked
+										onClick={e => (e.target.checked = !e.target.checked)}
+										name='remember'
+									/>{' '}
+									Remember me
+								</label>
+							)}
 						</div>
 					</Container>
 				</Form>
 			</ThemeProvider>
 		);
 	}
+}
+
+function capitalizeWord(word) {
+	return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 export default withFirebase(SignUp);
