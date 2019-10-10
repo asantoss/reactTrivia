@@ -7,6 +7,8 @@ import Room from './components/containers/RoomContainer';
 import Firebase, { FirebaseContext } from './components/firebase';
 import Home from './components/pages/homepage';
 import SignUp from './components/containers/SignUpContainer';
+import Navbar from './components/NavBar/NavBar'
+import Homepage from './components/pages/Home'
 // import CreateRoomForm from './components/Room/CreateRoomForm';
 
 function App() {
@@ -14,9 +16,9 @@ function App() {
 		<FirebaseContext.Provider value={new Firebase()}>
 			<Router>
 				<div className='App'>
-					<NavBar />
+					<Navbar />
+					<Route exact path='/home' component={Homepage} />
 					<Route path='/rooms/:id' component={Room} />
-					<Route exact path='/' component={Home} />
 					<Route exact path='/signup' component={SignUp} />
 					<Route exact path='/signin' component={SignUp} />
 				</div>
