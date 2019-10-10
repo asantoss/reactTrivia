@@ -79,12 +79,13 @@ class Firebase {
 		console.log(rooms.docs.map(doc => doc.data()));
 	};
 	doUpdateUser = async ({ roomId, userId, payload } = {}) => {
-		this.database
+		const query = await this.database
 			.collection('rooms')
 			.doc(roomId)
-			.collection('users')
-			.doc(userId)
-			.update({ ...payload });
+			.collection('users').where('id', '==', userId).get()
+		const doc = await query.docs
+		const userDocument = doc[0]
+		await this.database.collection('/rooms').doc(roomId).collection('users').doc(userDocument.id).update({ ...payload })
 	};
 }
 
