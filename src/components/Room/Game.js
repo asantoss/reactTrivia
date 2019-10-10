@@ -1,28 +1,42 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import Scoreboard from './Scoreboard';
 import styled from 'styled-components';
 
-export default class Game extends Component {
-	render() {
-		const nums = new Array(10);
-		return (
-			<GameContainer>
-				<div className='item'>item</div>
-				<div className='item'>item</div>
-				<div className='item'>item</div>
-				<div className='item'>item</div>
-				<div className='item'>item</div>
-				<div className='item'>item</div>
-			</GameContainer>
-		);
-	}
-}
+export default props => {
+	const [state, setState] = useState({
+		question: 'When was JavaScript invented?',
+		choices: ['1998', '1997', '2006', '2015'],
+		answer: ['1997']
+	});
+
+	const { shortUrl, question, choices } = props;
+	return (
+		<GameContainer>
+			{shortUrl && <h2>{shortUrl}</h2>}
+			<form action='' method='post'>
+				<h1>{state.question}</h1>
+				{state.choices.map((e, i) => {
+					return (
+						<div key={i}>
+							<input type='radio' name={e} id={`choice${i}`} key={i} />
+							<label htmlFor={`choice${i}`}>{e}</label>
+						</div>
+					);
+				})}
+				<button type='submit'>Submit</button>
+			</form>
+		</GameContainer>
+	);
+};
 
 const GameContainer = styled.div`
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-template-rows: 1fr 1fr 1fr;
+	display: flex;
 	width: 100vw;
 	height: 80vh;
-	.item {
+	text-align: center;
+	flex-direction: column;
+	form {
+		margin: auto;
+		align-self: center;
 	}
 `;

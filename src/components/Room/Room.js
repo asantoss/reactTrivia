@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Scoreboard from './Scoreboard';
-import Question from './Game';
+import Game from './Game';
+
 import { withFirebase } from '../firebase';
 
 class Room extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			name: '',
 			users: [],
-			currentQuestion: ''
+			roomInfo: null
 		};
 	}
 	componentDidMount() {
@@ -21,7 +21,10 @@ class Room extends Component {
 			.collection('rooms')
 			.doc(roomId)
 			.onSnapshot(room => {
-				this.setState(prevState => ({ ...prevState, ...room.data() }));
+				this.setState(prevState => ({
+					...prevState,
+					roomInfo: { ...prevState.roomInfo, ...room.data() }
+				}));
 			});
 		// *** Users data listener for updating the score.
 		fireBase.database
@@ -49,12 +52,8 @@ class Room extends Component {
 	render() {
 		return (
 			<div>
-				<h1>{this.state.name}</h1>
-				{this.state.shortUrl && <h2>{this.state.shortUrl}</h2>}
-				{/* <h1>{this.state.currentQuestion}?</h1> */}
-				{/* <Question question={this.state.currentQuestion} /> */}
+				<Game {...this.state.roomInfo} />
 				<Scoreboard users={this.state.users} />
-				<button onClick={this.handleScore}>Hello</button>
 			</div>
 		);
 	}

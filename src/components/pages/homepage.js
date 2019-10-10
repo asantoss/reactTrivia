@@ -12,21 +12,37 @@ import {
 } from './form';
 import { withFirebase } from '../firebase';
 
+const theme = {
+	font: 'Arial'
+};
 class Home extends Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			email: '',
+			password: ''
+		};
 	}
 
-	render() {
-		const [user, setUser] = useState('');
-		const [password, setPassword] = useState('');
+	onSubmit = e => {
+		e.preventDefault();
+		this.props.fireBase
+			.doSignInWithEmailAndPassword(this.state.email, this.state.password)
+			.then(console.log);
+	};
+	handleChange = event => {
+		this.setState({ [event.target.name]: event.target.value });
+	};
 
+	render() {
 		const theme = {
 			font: 'Arial'
 		};
+
 		return (
 			<ThemeProvider theme={theme}>
-				<Form action=' ' method=' '>
+				<Form onSubmit={e => this.onSubmit(e)}>
 					<StyledimgC>
 						<StyledImg src='triviaimg.png' alt='Trivia' />
 					</StyledimgC>
@@ -38,8 +54,9 @@ class Home extends Component {
 						<Input
 							type='text'
 							placeholder='Enter Username'
-							onchange={e => setUser(e.target.value)}
-							value={user}
+							name='email'
+							onChange={e => this.handleChange(e)}
+							value={this.state.email}
 							required
 						/>
 
@@ -49,20 +66,26 @@ class Home extends Component {
 						<Input
 							type='password'
 							placeholder='Enter Password'
-							value={password}
-							onChange={e => setPassword(e.target.value)}
+							name='password'
+							value={this.state.password}
+							onChange={e => this.handleChange(e)}
 							required
 						/>
 
 						<Button type='submit'>Login</Button>
 						<label>
-							<Input type='checkbox' checked='checked' name='remember' />{' '}
+							<Input
+								type='checkbox'
+								checked={true}
+								onChange={e => (e.target.checked = !e.target.checked)}
+								name='remember'
+							/>{' '}
 							Remember me
 						</label>
 					</Container>
 					<Container>
 						<Cancelbtn type='button'>Cancel</Cancelbtn>
-						<Span class='psw'>
+						<Span className='psw'>
 							Forgot <a href='#'>password?</a>{' '}
 						</Span>
 					</Container>
@@ -72,4 +95,4 @@ class Home extends Component {
 	}
 }
 
-export default Home;
+export default withFirebase(Home);

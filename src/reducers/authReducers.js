@@ -1,8 +1,7 @@
 const initialState = {
 	name: '',
 	id: '',
-	rooms: [],
-	score: 0
+	isLoggedIn: false
 };
 
 export default function(state = initialState, action) {

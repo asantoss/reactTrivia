@@ -8,6 +8,7 @@ const mapState = state => {
 };
 const mapDispatch = dispatch => ({
 	playerScore: () => {
+		debugger;
 		dispatch({ type: 'PLAYER_SCORE' });
 	}
 });

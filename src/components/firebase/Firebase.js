@@ -25,16 +25,29 @@ class Firebase {
 	}
 	// *** Auth API ***
 
-	doCreateUserWithEmailAndPassword = (email, password) => {
-		return this.auth.createUserWithEmailAndPassword(email, password);
+	doCreateUserWithEmailAndPassword = async (email, password) => {
+		await this.auth.createUserWithEmailAndPassword(email, password);
 	};
 
-	doSignInWithEmailAndPassword = (email, password) => {
-		return this.auth.signInWithEmailAndPassword(email, password);
+	doSignInWithEmailAndPassword = async (email, password) => {
+		const response = await this.auth.signInWithEmailAndPassword(
+			email,
+			password
+		);
+		return response.user;
 	};
 
 	doSignOut = () => this.auth.signOut();
 
+	doUpdateUserInfo = async ({ displayName }) => {
+		const user = this.auth.currentUser;
+		debugger;
+		await user.updateProfile({
+			displayName
+		});
+		debugger;
+		return user;
+	};
 	// *** Database API ***
 
 	doCreateRoom = async (roomName, hostUser) => {
