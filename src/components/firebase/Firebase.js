@@ -49,7 +49,19 @@ class Firebase {
 		return user;
 	};
 	// *** Database API ***
-
+	doRoomListen = (roomId, callback) => {
+		return this.database
+			.collection('rooms')
+			.doc(roomId)
+			.onSnapshot(callback);
+	};
+	doUsersListen = (roomId, callback) => {
+		return this.database
+			.collection('rooms')
+			.doc(roomId)
+			.collection('users')
+			.onSnapshot(callback);
+	};
 	doCreateRoom = async (roomName, hostUser) => {
 		const room = await this.database.collection('rooms').doc();
 		room.collection('users').add({ ...hostUser });
