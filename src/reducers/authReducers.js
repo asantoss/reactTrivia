@@ -1,6 +1,7 @@
 const initialState = {
 	name: '',
-	id: ''
+	id: '',
+	isLoggedIn: false
 };
 
 export default function(state = initialState, action) {
@@ -12,7 +13,12 @@ export default function(state = initialState, action) {
 				...payload
 			};
 		case 'LOGOUT':
-			return {};
+			return {
+				name: '',
+				id: '',
+				isLoggedIn: false,
+				score: 0
+			};
 		default:
 			return state;
 	}
