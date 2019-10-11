@@ -11,6 +11,16 @@ const Room = props => {
 	});
 	const fireBase = useContext(FirebaseContext);
 	useEffect(() => {
+		if (state.roomInfo !== null) {
+			const game = fireBase.database
+				.collection('games')
+				.doc('TechTrivia')
+				.get()
+				.then(res => {
+					debugger;
+					console.log(res);
+				});
+		}
 		const RoomUnsub = fireBase.doRoomListen('UxtXPxyiyuzNLS2OMCjA', room => {
 			setState(prevState => ({
 				...prevState,

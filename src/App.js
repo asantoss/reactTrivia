@@ -8,6 +8,7 @@ import Firebase, { FirebaseContext } from './components/firebase';
 import Scoreboard from './components/Room/Scoreboard';
 import Game from './components/Room/Game';
 import Authenticator from './components/containers/AuthenticatorContainer';
+import CreateGame from './components/pages/CreateGame';
 // import CreateRoomForm from './components/Room/CreateRoomForm';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 					<Route exact path='/signin' component={Authenticator} />
 					<Route exact path='/signup' component={Authenticator} />
 					<Route exact path='/' component={Landing} />
+					<Route exact path='/create' component={CreateGame} />
 				</div>
 			</Router>
 		</FirebaseContext.Provider>
