@@ -9,6 +9,8 @@ import Scoreboard from './components/Room/Scoreboard';
 import Game from './components/Room/Game';
 import Authenticator from './components/containers/AuthenticatorContainer';
 // import CreateRoomForm from './components/Room/CreateRoomForm';
+import UserUI from './components/Room/UserUI';
+import Timer from './components/Room/Timer'
 
 function App() {
 	return (
@@ -22,6 +24,10 @@ function App() {
 					<Route exact path='/signin' component={Authenticator} />
 					<Route exact path='/signup' component={Authenticator} />
 					<Route exact path='/' component={Landing} />
+					<Route exact path='/userUI' component={UserUI} />
+
+
+					<Route exact path='/timer' component={Timer} />
 				</div>
 			</Router>
 		</FirebaseContext.Provider>

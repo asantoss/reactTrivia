@@ -11,13 +11,13 @@ const Room = props => {
 	});
 	const fireBase = useContext(FirebaseContext);
 	useEffect(() => {
-		const RoomUnsub = fireBase.doRoomListen('UxtXPxyiyuzNLS2OMCjA', room => {
+		const RoomUnsub = fireBase.doRoomListen('1fjmZHwf5HZgJlY3AtLk', room => {
 			setState(prevState => ({
 				...prevState,
 				roomInfo: { ...prevState.roomInfo, ...room.data() }
 			}));
 		});
-		const userUnsub = fireBase.doUsersListen('UxtXPxyiyuzNLS2OMCjA', res => {
+		const userUnsub = fireBase.doUsersListen('1fjmZHwf5HZgJlY3AtLk', res => {
 			const users = res.docs.map(e => e.data());
 			setState(prevState => ({ ...prevState, users: [...users] }));
 		});
@@ -28,7 +28,7 @@ const Room = props => {
 	}, [setState, fireBase]);
 	return (
 		<div>
-			<Game {...state.roomInfo} />
+			<Game room={state.roomInfo} />
 			<Scoreboard users={state.users} />
 		</div>
 	);
