@@ -76,7 +76,7 @@ class Room extends React.Component {
 			return (
 				<div>
 					<HostView room={room} users={users} />
-					<UserUi room={room} users={users} />
+					<Game room={room} users={users} />
 				</div>
 			);
 		} else {
