@@ -4,7 +4,9 @@ import { FirebaseContext } from '../firebase';
 import Scoreboard from './Scoreboard';
 import Timer from './Timer';
 
+
 export default function UserUI(props) {
+  console.log(props);
   return (
     <ThemeProvider theme={theme}>
 

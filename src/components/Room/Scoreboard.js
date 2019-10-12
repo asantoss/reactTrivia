@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { FirebaseContext } from '../firebase';
-import { DivScoreboard } from './UserUI'
+
 
 
 
