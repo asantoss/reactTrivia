@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Form, Input, Button, StyledimgC, StyledImg, Container } from './form';
 import { withFirebase } from '../firebase';
 
@@ -13,7 +13,8 @@ class Authenticator extends Component {
 				email: '',
 				password: '',
 				displayName: ''
-			}
+			},
+			isAuthenticated: false
 		};
 	}
 
@@ -69,7 +70,9 @@ class Authenticator extends Component {
 		const { error } = this.state;
 		//Checks to see if it is the signup page in the URL and sets isSignup : true or false
 		const isSignUp = this.props.match.url === '/signup';
-		return (
+		return this.props.user.isLoggedIn ? (
+			<Redirect to='/' />
+		) : (
 			<ThemeProvider theme={theme}>
 				<Form onSubmit={isSignUp ? this.handleSignUp : this.handleSignIn}>
 					<StyledimgC>
@@ -119,10 +122,6 @@ class Authenticator extends Component {
 			</ThemeProvider>
 		);
 	}
-}
-
-function capitalizeWord(word) {
-	return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 export default withFirebase(Authenticator);

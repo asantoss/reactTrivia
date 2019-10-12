@@ -8,8 +8,6 @@ import Firebase, { FirebaseContext } from './components/firebase';
 import Scoreboard from './components/Room/Scoreboard';
 import Game from './components/Room/Game';
 import Authenticator from './components/containers/AuthenticatorContainer';
-import CreateGame from './components/pages/CreateGame';
-// import CreateRoomForm from './components/Room/CreateRoomForm';
 
 function App() {
 	return (
@@ -18,12 +16,11 @@ function App() {
 				<div className='App'>
 					<NavBar color />
 					<Route path='/rooms/:id' component={Room} />
-					<Route exact path='/scoreboard' component={Scoreboard} />
-					<Route exact path='/gamer' component={Game} />
+					{/* <Route exact path='/scoreboard' component={Scoreboard} /> */}
+					{/* <Route exact path='/profile' component={Game} /> */}
 					<Route exact path='/signin' component={Authenticator} />
 					<Route exact path='/signup' component={Authenticator} />
 					<Route exact path='/' component={Landing} />
-					<Route exact path='/create' component={CreateGame} />
 				</div>
 			</Router>
 		</FirebaseContext.Provider>

@@ -1,47 +1,87 @@
 import React, { useEffect, useState, useContext } from 'react';
-import Scoreboard from './Scoreboard';
+import HostView from './HostView';
 import Game from './Game';
 
-import { FirebaseContext } from '../firebase';
+import { FirebaseContext, withFirebase } from '../firebase';
 
-const Room = props => {
-	const [state, setState] = useState({
+// const Room = ({ user, match }) => {
+// 	const [users, setUsers] = useState([]);
+// 	const [room, setRoom] = useState(null);
+// 	const [isHost, setHost] = useState(false);
+// 	const fireBase = useContext(FirebaseContext);
+// 	useEffect(() => {
+// 		const RoomUnsub = fireBase.doRoomListen('UxtXPxyiyuzNLS2OMCjA', room => {
+// 			const roomObj = room.data();
+// 			debugger;
+// 			roomObj.host.id === user.id && setHost(true);
+// 			setRoom(prevState => ({ ...prevState, ...roomObj }));
+// 		});
+// 		const userUnsub = fireBase.doUsersListen('UxtXPxyiyuzNLS2OMCjA', res => {
+// 			const usersFromDb = res.docs.map(e => e.data());
+// 			setUsers([...usersFromDb]);
+// 		});
+// 		return () => {
+// 			userUnsub();
+// 			RoomUnsub();
+// 		};
+// 	}, [setUsers, setRoom, setHost, fireBase, user]);
+// 	debugger;
+// 	return isHost ? (
+// 		<div>
+// 			<HostView room={room} users={users} />
+// 		</div>
+// 	) : (
+// 		<div>
+// 			<Game room={room} users={users} />
+// 		</div>
+// 	);
+// };
+
+class Room extends React.Component {
+	state = {
 		users: [],
-		roomInfo: null
-	});
-	const fireBase = useContext(FirebaseContext);
-	useEffect(() => {
-		if (state.roomInfo !== null) {
-			const game = fireBase.database
-				.collection('games')
-				.doc('TechTrivia')
-				.get()
-				.then(res => {
-					debugger;
-					console.log(res);
-				});
+		room: null,
+		isHost: true
+	};
+	componentDidMount() {
+		if (!this.props.match.params.id) return;
+		const { id: roomId } = this.props.match.params;
+		this.userUnsub = this.props.fireBase.doUsersListen(roomId, res => {
+			const usersFromDb = res.docs.map(e => e.data());
+			this.setState(prevState => ({ ...prevState, user: [...usersFromDb] }));
+		});
+		this.roomUnsub = this.props.fireBase.doRoomListen(roomId, room => {
+			const roomObj = room.data();
+			roomObj.host.id === this.props.user.id && this.setState({ host: true });
+			this.setState({ room: { ...roomObj } });
+		});
+	}
+	componentWillUnmount() {
+		this.userUnsub();
+		this.roomUnsub();
+	}
+	render() {
+		const { room, users } = this.state;
+		// return this.state.isHost ? (
+		// 	<div>
+		// 		<HostView room={room} users={users} />
+		// 	</div>
+		// ) : (
+		// 	<div>
+		// 		<Game room={room} users={users} />
+		// 	</div>
+		// );
+		if (room) {
+			debugger;
+			return (
+				<div>
+					<HostView room={room} users={users} />
+					<UserUi room={room} users={users} />
+				</div>
+			);
+		} else {
+			return <div>Loading..</div>;
 		}
-		const RoomUnsub = fireBase.doRoomListen('UxtXPxyiyuzNLS2OMCjA', room => {
-			setState(prevState => ({
-				...prevState,
-				roomInfo: { ...prevState.roomInfo, ...room.data() }
-			}));
-		});
-		const userUnsub = fireBase.doUsersListen('UxtXPxyiyuzNLS2OMCjA', res => {
-			const users = res.docs.map(e => e.data());
-			setState(prevState => ({ ...prevState, users: [...users] }));
-		});
-		return () => {
-			userUnsub();
-			RoomUnsub();
-		};
-	}, [setState, fireBase]);
-	return (
-		<div>
-			<Game {...state.roomInfo} />
-			<Scoreboard users={state.users} />
-		</div>
-	);
-};
-
-export default Room;
+	}
+}
+export default withFirebase(Room);

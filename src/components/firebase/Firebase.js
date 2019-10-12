@@ -30,10 +30,9 @@ class Firebase {
 	};
 
 	doSignInWithEmailAndPassword = async (email, password) => {
-		const response = await this.auth.signInWithEmailAndPassword(
-			email,
-			password
-		);
+		const response = await this.auth
+			.setPersistence('local')
+			.then(() => this.auth.signInWithEmailAndPassword(email, password));
 		return response.user;
 	};
 
@@ -41,11 +40,9 @@ class Firebase {
 
 	doUpdateUserInfo = async ({ displayName }) => {
 		const user = this.auth.currentUser;
-		debugger;
 		await user.updateProfile({
 			displayName
 		});
-		debugger;
 		return user;
 	};
 	// *** Database API ***
@@ -64,11 +61,17 @@ class Firebase {
 	};
 	doCreateRoom = async (roomName, hostUser) => {
 		const room = await this.database.collection('rooms').doc();
-		room.collection('users').add({ ...hostUser });
+		// room.collection('users').add({ ...hostUser });
 		await room.set({
+			id: room.id,
 			roomName: roomName,
 			host: { ...hostUser },
-			url: `${urlPath}`
+			url: `${urlPath}`,
+			currentQuestion: {
+				question: '',
+				choices: [],
+				answer: ''
+			}
 		});
 		return room.id;
 	};
@@ -116,10 +119,17 @@ class Firebase {
 		const query = await this.database
 			.collection('rooms')
 			.doc(roomId)
-			.collection('users').where('id', '==', userId).get()
-		const doc = await query.docs
-		const userDocument = doc[0]
-		await this.database.collection('/rooms').doc(roomId).collection('users').doc(userDocument.id).update({ ...payload })
+			.collection('users')
+			.where('id', '==', userId)
+			.get();
+		const doc = await query.docs;
+		const userDocument = doc[0];
+		await this.database
+			.collection('/rooms')
+			.doc(roomId)
+			.collection('users')
+			.doc(userDocument.id)
+			.update({ ...payload });
 	};
 }
 

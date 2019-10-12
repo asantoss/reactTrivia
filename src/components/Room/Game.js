@@ -9,12 +9,13 @@ export default props => {
 	// 	answer: ['1997']
 	// });
 
-	const { shortUrl, question } = props;
+	const { shortUrl, currentQuestion: question } = props.room;
+	debugger;
 	return (
 		<GameContainer>
 			{shortUrl && <h2>{shortUrl}</h2>}
 			<form action='' method='post'>
-				<h1>{question.question}</h1>
+				<h1>{question.text}</h1>
 				{question.choices.map((e, i) => {
 					return (
 						<div key={i}>

@@ -1,23 +1,23 @@
 import React, { useState, useContext } from 'react';
 import { FirebaseContext } from '../firebase';
 import styled from 'styled-components';
+// import Scoreboard from './Scoreboard';
 
-export default function CreateGame(props) {
+export default function HostView({ room }) {
 	const [game, setGame] = useState([]);
+	const [roomName, setRoomName] = useState('');
 	const [question, setQuestion] = useState({
-		question: '',
+		text: '',
 		answer: '',
 		choices: []
 	});
-	const [choice, setChoice] = useState({
-		value: ''
-	});
+	const [choice, setChoice] = useState('');
 	const fireBase = useContext(FirebaseContext);
 	const handleChange = e => {
 		setQuestion({ ...question, [e.target.name]: e.target.value });
 	};
 	const handleChoice = e => {
-		setChoice({ ...choice, [e.target.name]: e.target.value });
+		setChoice(e.target.value);
 	};
 	const addChoice = e => {
 		e.preventDefault();
@@ -31,52 +31,49 @@ export default function CreateGame(props) {
 		setChoice({ type: 'text', value: '' });
 	};
 
-	const submitGameToDB = () => {
+	const submitQuestionToDb = question => {
+		const { id } = room;
 		fireBase.database
-			.collection('games')
-			.doc('TechTrivia')
-			.set({
-				name: 'Tech Trivia',
-				questions: [...game]
+			.collection('rooms')
+			.doc(id)
+			.update({
+				currentQuestion: { ...question }
 			});
 	};
 	return (
 		<CreateGameContainer>
 			<div className='question_form'>
 				<div>
-					<form onSubmit={addToGame} action=''>
-						{Object.keys(question).map((field, i) => {
-							if (field === 'choices') {
-								return question[field].map((choice, i) => (
-									<p key={i}>{choice.value}</p>
-								));
-							} else {
-								return (
-									<div key={i} style={{ textTransform: 'capitalize' }}>
-										<label htmlFor={field + i}>{field}: </label>
-										<input
-											key={i}
-											type='text'
-											id={`${field}${i}`}
-											name={field}
-											value={question[field].value}
-											onChange={handleChange}
-										/>
-									</div>
-								);
-							}
-						})}
-						<button type='submit'>Add Question</button>
-					</form>
+					<label htmlFor='question'>Question: </label>
+					<input
+						type='text'
+						id='question'
+						name='text'
+						value={question.text}
+						onChange={handleChange}
+					/>
+					<label htmlFor='answer'>Answer: </label>
+					<input
+						id='answer'
+						name='answer'
+						value={question.answer}
+						onChange={handleChange}
+					/>
+					<button onClick={addToGame} type='submit'>
+						Add Question
+					</button>
 				</div>
 				<div>
-					{/* <select onChange={handleChoice} name='type' id=''>
-					<option value='text'>Input</option>
-					<option value='radio'>MutipleChoice</option>
-				</select> */}
+					{question.choices.map(choice => {
+						return <p>{choice}</p>;
+					})}
+					<label htmlFor='choice'>
+						Choice {question.choices.length > 0 && question.choices.length + 1}
+					</label>
 					<input
 						type='text'
 						name='value'
+						id='choice'
 						onChange={handleChoice}
 						value={choice.value}
 					/>
@@ -85,18 +82,19 @@ export default function CreateGame(props) {
 			</div>
 			<div>
 				{game.map((questionObj, i) => {
-					const { question, answer, choices } = questionObj;
+					const { text, choices } = questionObj;
 					return (
 						<div key={i}>
-							<h1>{question}</h1>
-							<h1>{answer}</h1>
+							<h1>{text}</h1>
 							{choices.map((choice, i) => (
-								<p key={i}>{choice.value}</p>
+								<p key={i}>{choice}</p>
 							))}
+							<button onClick={() => submitQuestionToDb(questionObj)}>
+								Submit to DB
+							</button>
 						</div>
 					);
 				})}
-				<button onClick={submitGameToDB}>Submit to DB</button>
 			</div>
 		</CreateGameContainer>
 	);
