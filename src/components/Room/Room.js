@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import HostView from './HostView';
-import Game from './Game';
+import UserUi from './UserUI';
 
 import { FirebaseContext, withFirebase } from '../firebase';
 

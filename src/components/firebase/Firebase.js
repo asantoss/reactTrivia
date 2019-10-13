@@ -61,7 +61,8 @@ class Firebase {
 	};
 	doCreateRoom = async (roomName, hostUser) => {
 		const room = await this.database.collection('rooms').doc();
-		// room.collection('users').add({ ...hostUser });
+
+		room.collection('users').add({ ...hostUser });
 		await room.set({
 			id: room.id,
 			roomName: roomName,
