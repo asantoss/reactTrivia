@@ -18,7 +18,7 @@ export default function UserUI(props) {
             <P>What's your fav JS framework/library?</P>
           </div>
 
-          <Timer startCount='30' />
+          <Timer startCount={30} />
 
           <div className='answers'>
             <UList>

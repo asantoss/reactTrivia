@@ -31,9 +31,9 @@ function NavBar(props) {
 				</NavLink>
 				<NavLink
 					className='NavLink'
-					to='/about'
+					to='/profile'
 					activeClassName='NavLink active'>
-					About
+					Profile
 				</NavLink>
 				{isLoggedIn ? (
 					<div className='NavLink' onClick={handleLogout}>

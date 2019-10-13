@@ -3,19 +3,20 @@ import Scoreboard from './Scoreboard';
 import styled from 'styled-components';
 
 export default props => {
-	const [state, setState] = useState({
-		question: 'When was JavaScript invented?',
-		choices: ['1998', '1997', '2006', '2015'],
-		answer: ['1997']
-	});
+	// const [state, setState] = useState({
+	// 	question: 'When was JavaScript invented?',
+	// 	choices: ['1998', '1997', '2006', '2015'],
+	// 	answer: ['1997']
+	// });
 
-	const { shortUrl, question, choices } = props;
+	const { shortUrl, currentQuestion: question } = props.room;
+	debugger;
 	return (
 		<GameContainer>
 			{shortUrl && <h2>{shortUrl}</h2>}
 			<form action='' method='post'>
-				<h1>{state.question}</h1>
-				{state.choices.map((e, i) => {
+				<h1>{question.text}</h1>
+				{question.choices.map((e, i) => {
 					return (
 						<div key={i}>
 							<input type='radio' name={e} id={`choice${i}`} key={i} />

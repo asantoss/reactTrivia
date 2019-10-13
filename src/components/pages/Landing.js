@@ -18,7 +18,6 @@ export default function Landing(props) {
 				.doCreateRoom(state, props.user)
 				.then(res => {
 					error !== null && setError(null);
-					debugger;
 					setRoomId(res);
 					setRedirect(!redirect);
 				})
