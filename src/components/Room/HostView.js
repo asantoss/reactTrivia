@@ -30,7 +30,6 @@ export default function HostView({ room }) {
 		setQuestion({ question: '', choices: [], answer: '' });
 		setChoice({ type: 'text', value: '' });
 	};
-
 	const submitQuestionToDb = question => {
 		const { id } = room;
 		fireBase.database
@@ -40,6 +39,7 @@ export default function HostView({ room }) {
 				currentQuestion: { ...question }
 			});
 	};
+	const setNextHost = id => {};
 	return (
 		<CreateGameContainer>
 			<div className='question_form'>

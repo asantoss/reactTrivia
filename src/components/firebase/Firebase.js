@@ -35,6 +35,10 @@ class Firebase {
 			.then(() => this.auth.signInWithEmailAndPassword(email, password));
 		return response.user;
 	};
+	doSignInAnon = async () => {
+		const response = await this.auth.signInAnonymously();
+		return response.user;
+	};
 
 	doSignOut = () => this.auth.signOut();
 
@@ -61,12 +65,11 @@ class Firebase {
 	};
 	doCreateRoom = async (roomName, hostUser) => {
 		const room = await this.database.collection('rooms').doc();
-
 		room.collection('users').add({ ...hostUser });
 		await room.set({
 			id: room.id,
 			roomName: roomName,
-			host: { ...hostUser },
+			hostId: hostUser.id,
 			url: `${urlPath}`,
 			currentQuestion: {
 				question: '',
@@ -98,7 +101,7 @@ class Firebase {
 			.collection('rooms')
 			.doc(roomId)
 			.collection('users')
-			.doc()
+			.doc(user.id)
 			.set({
 				...user
 			});
@@ -117,19 +120,11 @@ class Firebase {
 		console.log(rooms.docs.map(doc => doc.data()));
 	};
 	doUpdateUser = async ({ roomId, userId, payload } = {}) => {
-		const query = await this.database
+		await this.database
 			.collection('rooms')
 			.doc(roomId)
 			.collection('users')
-			.where('id', '==', userId)
-			.get();
-		const doc = await query.docs;
-		const userDocument = doc[0];
-		await this.database
-			.collection('/rooms')
-			.doc(roomId)
-			.collection('users')
-			.doc(userDocument.id)
+			.doc(userId)
 			.update({ ...payload });
 	};
 }
