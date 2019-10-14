@@ -1,9 +1,10 @@
 const initialState = {
 	name: '',
-	id: ''
+	id: '',
+
 };
 
-export default function(state = initialState, action) {
+const authReducer = (state = initialState, action) => {
 	const { type, payload } = action;
 	switch (type) {
 		case 'LOGIN':
@@ -12,8 +13,12 @@ export default function(state = initialState, action) {
 				...payload
 			};
 		case 'LOGOUT':
-			return {};
+			console.log('signout success');
+			return state;
 		default:
 			return state;
 	}
 }
+
+
+export default authReducer;

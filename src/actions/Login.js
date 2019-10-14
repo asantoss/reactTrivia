@@ -4,3 +4,4 @@ export const login = ({ email, password } = {}) => dispatch => {
 		payload: { email, password }
 	});
 };
+

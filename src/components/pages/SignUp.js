@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { Form, Input, Button, StyledimgC, StyledImg, Container } from './form';
 import { withFirebase } from '../firebase';
 import { firestore } from 'firebase';
-
+import { connect } from 'react-redux'
 class SignUp extends Component {
 	constructor(props) {
 		super(props);
@@ -64,28 +64,28 @@ class SignUp extends Component {
 
 					<Container>
 						{//Create an array from all of the keys in state
-						Object.keys(this.state).map((stateKey, i) => {
-							const keyCapitalized =
-								stateKey === 'displayName'
-									? 'Display Name'
-									: capitalizeWord(stateKey);
-							if (!isSignUp && stateKey === 'displayName') return null;
-							return (
-								<div key={i}>
-									<label htmlFor={stateKey}>
-										<b>{keyCapitalized}</b>
-									</label>
-									<Input
-										type={stateKey === 'password' ? 'password' : 'text'}
-										placeholder={`Enter ${keyCapitalized}`}
-										name={stateKey}
-										onChange={e => this.handleChange(e)}
-										value={this.state[stateKey]}
-										required
-									/>
-								</div>
-							);
-						})}
+							Object.keys(this.state).map((stateKey, i) => {
+								const keyCapitalized =
+									stateKey === 'displayName'
+										? 'Display Name'
+										: capitalizeWord(stateKey);
+								if (!isSignUp && stateKey === 'displayName') return null;
+								return (
+									<div key={i}>
+										<label htmlFor={stateKey}>
+											<b>{keyCapitalized}</b>
+										</label>
+										<Input
+											type={stateKey === 'password' ? 'password' : 'text'}
+											placeholder={`Enter ${keyCapitalized}`}
+											name={stateKey}
+											onChange={e => this.handleChange(e)}
+											value={this.state[stateKey]}
+											required
+										/>
+									</div>
+								);
+							})}
 						<div>
 							<Button type='submit'>Sign Up</Button>
 							{isSignUp && (
@@ -110,5 +110,6 @@ class SignUp extends Component {
 function capitalizeWord(word) {
 	return word.charAt(0).toUpperCase() + word.slice(1);
 }
+
 
 export default withFirebase(SignUp);
