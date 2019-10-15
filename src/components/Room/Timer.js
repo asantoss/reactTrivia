@@ -66,7 +66,7 @@ export default class Timer extends Component {
 
     //!!Set interval 
     this.myInterval = setInterval(() => {
-      console.log('click');
+
       if (this.state.count <= 0) {
         clearInterval(this.myInterval);
       }

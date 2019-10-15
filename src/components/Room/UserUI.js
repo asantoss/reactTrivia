@@ -6,7 +6,7 @@ import Timer from './Timer';
 
 
 export default function UserUI(props) {
-  console.log(props);
+
   return (
     <ThemeProvider theme={theme}>
 
@@ -22,10 +22,17 @@ export default function UserUI(props) {
 
           <div className='answers'>
             <UList>
-              <li>A. React</li>
-              <li>B. Angular</li>
-              <li>C. Vue</li>
-              <li>D. IDK</li>
+              <div>
+
+                <List color='red'>React</List>
+                <List color='RoyalBlue'>Angular</List>
+              </div>
+
+              <div>
+
+                <List color='yellow'>Vue</List>
+                <List color='green'>IDK</List>
+              </div>
             </UList>
           </div>
 
@@ -42,7 +49,8 @@ export default function UserUI(props) {
 }
 
 const theme = {
-
+  fontWeight: 600,
+  color: 'white',
 }
 
 const P = styled.p`
@@ -53,11 +61,11 @@ const P = styled.p`
   box-shadow: 5px 5px #888888;
   font-size: 1.3rem;
   margin: 0 auto;
-  margin-bottom: 20px;
+  margin-bottom: 10vh;
   background: rgb(131,58,180);
   background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
-  color: white;
-  font-weight: 600;
+  color: ${props => props.theme.color};
+  font-weight: ${props => props.theme.fontWeight};
   
   
 `
@@ -82,8 +90,25 @@ export const DivScoreboard = styled.div`
 
 const UList = styled.ul`
   list-style: none;
-  margin-top: 3vh;
+  /* margin-top: 3vh; */
   display: flex;
-  flex-direction: column;
+  flex-direction:row;
+  width: 60%;
+  margin: 0 auto;
+  margin-top: 12vh;
+`
+
+const List = styled.li`
+  border: 1px white solid; 
+  background: ${props => props.color};
+  /* padding: 2vh 5vh;  */
+  width: 15vw;
+  height: 10vh;
+  margin: 10px 5px;
+  box-shadow: 3px 3px #888888;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: ${props => props.theme.fontWeight};
 `
 

@@ -102,10 +102,11 @@ export default function Scoreboard(props) {
 
 const theme = {
 
-	primary: "#edb51c",
-	secondary: "#43e838",
-	ackground: 'rgb(131,58,180)',
-	background: 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)'
+	// primary: "#edb51c",
+	// secondary: "#43e838",
+	background: 'rgb(131,58,180)',
+	background: 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)',
+	color: 'white',
 }
 
 const DivContainer = styled.div`
@@ -114,7 +115,8 @@ const DivContainer = styled.div`
 	margin: 0 auto;
 	width: 100%;
 	flex-basis: 35%;
-  color: white;
+	color: ${props => props.theme.color};
+	box-shadow: 5px 5px #888888;
 
 `
 const Table = styled.table`
@@ -128,6 +130,7 @@ const TableHead = styled.thead`
 
 const TableTR = styled.tr`
 	text-align: center;
+	
 	&:nth-child(odd) {
 		text-align: center;
 	}
