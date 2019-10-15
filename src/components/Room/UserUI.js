@@ -7,7 +7,14 @@ import Timer from './Timer';
 
 export default function UserUI(props) {
 
+  const submitChoice = () => {
+    alert('hello world')
+  };
+
+
+
   return (
+
     <ThemeProvider theme={theme}>
 
 
@@ -20,21 +27,20 @@ export default function UserUI(props) {
 
           <Timer startCount={30} />
 
-          <div className='answers'>
+          {/* <div className='answers'>
             <UList>
               <div>
 
-                <List color='red'>React</List>
-                <List color='RoyalBlue'>Angular</List>
+                <List color='red' onClick={submitChoice}>React</List>
+                <List color='RoyalBlue' >Angular</List>
               </div>
 
               <div>
-
-                <List color='yellow'>Vue</List>
-                <List color='green'>IDK</List>
+                <List color='yellow' >Vue</List>
+                <List color='green' >IDK</List>
               </div>
             </UList>
-          </div>
+          </div> */}
 
         </DivMain>
 
