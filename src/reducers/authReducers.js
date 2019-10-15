@@ -1,6 +1,7 @@
 const initialState = {
 	name: '',
 	id: '',
+	isLoggedIn: false
 
 };
 
@@ -13,8 +14,12 @@ const authReducer = (state = initialState, action) => {
 				...payload
 			};
 		case 'LOGOUT':
-			console.log('signout success');
-			return state;
+			console.log('here i am again !!!!!!')
+			return {
+				...state,
+				isLoggedIn: false
+			}
+
 		default:
 			return state;
 	}

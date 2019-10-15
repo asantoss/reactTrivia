@@ -1,14 +1,18 @@
 import { connect } from 'react-redux';
 import SignedInLinks from '../NavBar/SignedInLinks'
-import Firebase, { doSignOut } from '../firebase/Firebase'
-import logout from '../../actions/Login'
-const mapDispatchToProps = (dispatch) => {
+
+//TODO Import this file directly to the NavBar Component , so that redux and the react component are communicating 
+const mapStateToProps = state => ({
+    ...state
+});
+
+const mapDispatchToProps = dispatch => {
     return {
-        doSignOut: () => dispatch(doSignOut())
+        logout: () => dispatch({ type: 'LOGOUT' })
     }
 }
 
 export default connect(
-    null,
-    matchDispatchtoProps
+    mapStateToProps,
+    mapDispatchToProps
 )(SignedInLinks);
