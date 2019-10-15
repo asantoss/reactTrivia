@@ -30,7 +30,7 @@ export default function Scoreboard(props) {
 		{
 			name: 'Tim',
 			id: 768763245,
-			score: 90
+			score: 107
 		},
 		{
 			name: 'Renna',
@@ -53,28 +53,31 @@ export default function Scoreboard(props) {
 			score: 96
 		}
 	];
-
+	//TODO: all the user are hardcoded, needs to be set up to where i can fetch them from
+	//TODO: firebase
 	const fireBase = useContext(FirebaseContext);
 
 	const { users } = props;
 
+
 	const Players = usersHardcodedData.sort((a, b) => b.score - a.score).map((userObj, id) => {
-		const { user, score } = userObj;
+
+		const { name, score } = userObj;
 		return (
 			<TableTR>
 				<TableTH>{1 + id}</TableTH>
-				<TableTH>{user}</TableTH>
+				<TableTH>{name}</TableTH>
 				<TableTH>{score}</TableTH>
 			</TableTR>
 		)
 	})
 
 	const addUsers = () => {
-		// fireBase.doUpdateUser({
-		// 	roomId: '38CXzxbp15uoeoGdvWoB',
-		// 	userId: 768763249,
-		// 	payload: { score: 35 }
-		// });
+		fireBase.doUpdateUser({
+			roomId: '38CXzxbp15uoeoGdvWoB',
+			userId: 768763249,
+			payload: { score: 35 }
+		});
 
 		usersHardcodedData.forEach(name =>
 			fireBase.doAddUserToRoom('UxtXPxyiyuzNLS2OMCjA', name)

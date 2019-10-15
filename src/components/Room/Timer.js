@@ -1,5 +1,5 @@
-import React, { useState, Component } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
 
 export default class Timer extends Component {
@@ -57,7 +57,7 @@ export default class Timer extends Component {
   }
 
 
-  //!! this is where i want to increment my count
+  //!! this is where i want to decrement my count
   componentDidMount() {
     // const { startCount } = this.props;
     // this.setState({
