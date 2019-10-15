@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { FirebaseContext } from '../firebase';
 import Scoreboard from './Scoreboard';
@@ -6,12 +6,25 @@ import Timer from './Timer';
 
 
 export default function UserUI(props) {
+  const [choice, setChoice] = useState('');
+
+  const pickChoice = (e) => {
+
+    setChoice(e)
+
+  }
 
   const submitChoice = () => {
-    alert('hello world')
-  };
+    const { currentQuestions } = props.room;
+    const response = {
+      question: currentQuestions.text,
+      userAnswer: choice,
+      correctAnwer: currentQuestions.answer,
+    }
+    props.submitResponse(response)
+  }
 
-
+  const choices = ['React', 'Vue', 'Angular', 'Svelt']
 
   return (
 
@@ -22,25 +35,28 @@ export default function UserUI(props) {
         <DivMain>
 
           <div className='question'>
-            <P>What's your fav JS framework/library?</P>
+            <P>WHats your fav js library/framework?</P>
           </div>
 
           <Timer startCount={30} />
 
-          {/* <div className='answers'>
+          <div className='answers'>
             <UList>
               <div>
+                {choices.slice(0, 2).map((e, i) => {
 
-                <List color='red' onClick={submitChoice}>React</List>
-                <List color='RoyalBlue' >Angular</List>
+                  return <List value={e} color={i} onClick={() => pickChoice(e)}>{e}</List>
+                })}
               </div>
 
               <div>
-                <List color='yellow' >Vue</List>
-                <List color='green' >IDK</List>
+                {choices.slice(2, 4).map((e, i) => {
+                  return <List value={e} color={i + 2} onClick={() => pickChoice(e)}>{e}</List>
+                })}
               </div>
             </UList>
-          </div> */}
+          </div>
+          <button onClick={submitChoice}>Submit</button>
 
         </DivMain>
 
@@ -106,15 +122,15 @@ const UList = styled.ul`
 
 const List = styled.li`
   border: 1px white solid; 
-  background: ${props => props.color};
-  /* padding: 2vh 5vh;  */
-  width: 15vw;
-  height: 10vh;
-  margin: 10px 5px;
-  box-shadow: 3px 3px #888888;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: ${props => props.theme.fontWeight};
+  background: ${({ color }) => { if (color === 0) { return 'yellow' } else if (color === 1) { return 'green' } else if (color === 2) { return 'red' } else { return 'blue' } }};
+/* padding: 2vh 5vh;  */
+width: 15vw;
+height: 10vh;
+margin: 10px 5px;
+box-shadow: 3px 3px #888888;
+display: flex;
+justify-content: center;
+align-items: center;
+font-weight: ${ props => props.theme.fontWeight};
 `
 
