@@ -4,7 +4,7 @@ import { FirebaseContext } from '../firebase';
 import Scoreboard from './Scoreboard';
 import Timer from './Timer';
 
-export default function UserUI(props) {
+export default function UserUI({ room, users, submitResponse }) {
 	const [choice, setChoice] = useState('');
 
 	const pickChoice = e => {
@@ -12,23 +12,22 @@ export default function UserUI(props) {
 	};
 
 	const submitChoice = () => {
-		const { currentQuestions } = props.room;
+		const { currentQuestions } = room;
 		const response = {
 			question: currentQuestions.text,
 			userAnswer: choice,
 			correctAnwer: currentQuestions.answer
 		};
-		props.submitResponse(response);
+		submitResponse(response);
 	};
 
 	const choices = ['React', 'Vue', 'Angular', 'Svelt'];
-
 	return (
 		<ThemeProvider theme={theme}>
 			<DivContainer>
 				<DivMain>
 					<div className='question'>
-						<P>WHats your fav js library/framework?</P>
+						<P>{room.currentQuestion.text}</P>
 					</div>
 
 					<Timer startCount={30} />
@@ -73,7 +72,7 @@ export default function UserUI(props) {
 					<button onClick={submitChoice}>Submit</button>
 				</DivMain>
 
-				<Scoreboard users={props.users} />
+				<Scoreboard users={users} />
 			</DivContainer>
 		</ThemeProvider>
 	);
