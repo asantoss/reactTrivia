@@ -59,7 +59,6 @@ export default function Scoreboard(props) {
 
 	const { users } = props;
 
-
 	const Players = usersHardcodedData.sort((a, b) => b.score - a.score).map((userObj, id) => {
 
 		const { name, score } = userObj;
@@ -104,7 +103,6 @@ export default function Scoreboard(props) {
 }
 
 const theme = {
-
 	// primary: "#edb51c",
 	// secondary: "#43e838",
 	background: 'rgb(131,58,180)',
