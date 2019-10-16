@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { FirebaseContext } from '../firebase';
 import styled from 'styled-components';
-// import Scoreboard from './Scoreboard';
+import Scoreboard from './Scoreboard';
 
-export default function HostView({ room }) {
+export default function HostView({ room, users }) {
 	const [game, setGame] = useState([]);
 	const [roomName, setRoomName] = useState('');
 	const [question, setQuestion] = useState({
@@ -22,7 +22,7 @@ export default function HostView({ room }) {
 	const addChoice = e => {
 		e.preventDefault();
 		setQuestion({ ...question, choices: [...question.choices, choice] });
-		setChoice({ value: '' });
+		setChoice('');
 	};
 	const addToGame = e => {
 		e.preventDefault();
@@ -39,7 +39,14 @@ export default function HostView({ room }) {
 				currentQuestion: { ...question }
 			});
 	};
-	const setNextHost = id => {};
+	const setNextHost = id => {
+		const currentHost = users.filter(user => user.id === room.hostId);
+		const currentHostIndex = users.indexOf(currentHost);
+		const nextHost = users[currentHostIndex + 1];
+		fireBase.database.collection('rooms').update({
+			hostId: nextHost.id
+		});
+	};
 	return (
 		<CreateGameContainer>
 			<div className='question_form'>
@@ -64,9 +71,11 @@ export default function HostView({ room }) {
 					</button>
 				</div>
 				<div>
-					{question.choices.map(choice => {
-						return <p>{choice}</p>;
-					})}
+					<div>
+						{question.choices.map(choice => {
+							return <p>{choice}</p>;
+						})}
+					</div>
 					<label htmlFor='choice'>
 						Choice {question.choices.length > 0 && question.choices.length + 1}
 					</label>
@@ -75,12 +84,13 @@ export default function HostView({ room }) {
 						name='value'
 						id='choice'
 						onChange={handleChoice}
-						value={choice.value}
+						value={choice}
 					/>
 					<button onClick={addChoice}>Add Choice</button>
 				</div>
 			</div>
 			<div>
+				<li value={choice}>{choice}</li>
 				{game.map((questionObj, i) => {
 					const { text, choices } = questionObj;
 					return (
@@ -95,6 +105,12 @@ export default function HostView({ room }) {
 						</div>
 					);
 				})}
+				{users.map(e => {
+					if (e.responses) {
+						return <p>{e.responses[0].userAnswer}</p>;
+					}
+				})}
+				<Scoreboard users={users} />
 			</div>
 		</CreateGameContainer>
 	);

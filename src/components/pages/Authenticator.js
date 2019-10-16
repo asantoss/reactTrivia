@@ -92,7 +92,9 @@ class Authenticator extends Component {
 		//Checks to see if it is the signup page in the URL and sets isSignup : true or false
 		const isSignUp = this.props.match.url === '/signup';
 		return this.props.user.isLoggedIn ? (
-			<Redirect to='/' />
+			<Redirect
+				to={this.props.location.state ? this.props.location.state.from : '/'}
+			/>
 		) : (
 			<ThemeProvider theme={theme}>
 				<Form onSubmit={isSignUp ? this.handleSignUp : this.handleSignIn}>

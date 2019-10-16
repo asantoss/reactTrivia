@@ -1,4 +1,4 @@
-import app from 'firebase/app';
+import app, { firestore } from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 const firebaseConfig = {
@@ -65,7 +65,10 @@ class Firebase {
 	};
 	doCreateRoom = async (roomName, hostUser) => {
 		const room = await this.database.collection('rooms').doc();
-		room.collection('users').add({ ...hostUser });
+		room
+			.collection('users')
+			.doc(hostUser.id)
+			.set({ name: hostUser.name, id: hostUser.id, roomId: room.id });
 		await room.set({
 			id: room.id,
 			roomName: roomName,
@@ -103,7 +106,9 @@ class Firebase {
 			.collection('users')
 			.doc(user.id)
 			.set({
-				...user
+				id: user.id,
+				name: user.name,
+				roomId: roomId
 			});
 	};
 	doGetUsersInRoom = async roomId => {
@@ -126,6 +131,22 @@ class Firebase {
 			.collection('users')
 			.doc(userId)
 			.update({ ...payload });
+	};
+	doUserScore = async ({ roomid, userId, score } = {}) => {
+		await this.database
+			.collection('rooms')
+			.doc(roomid)
+			.collection('users')
+			.doc(userId)
+			.update({ score: firestore.FieldValue.increment(score) });
+	};
+	doAddUserResponse = async ({ roomid, userId, payload } = {}) => {
+		await this.database
+			.collection('rooms')
+			.doc(roomid)
+			.collection('users')
+			.doc(userId)
+			.update({ responses: firestore.FieldValue.arrayUnion({ ...payload }) });
 	};
 }
 

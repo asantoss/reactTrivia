@@ -19,6 +19,11 @@ export default function(state = initialState, action) {
 				isLoggedIn: false,
 				score: 0
 			};
+		case 'REDIRECT_TO_SIGNIN':
+			return {
+				...state,
+				...payload
+			};
 		default:
 			return state;
 	}
