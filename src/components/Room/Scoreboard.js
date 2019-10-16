@@ -2,6 +2,9 @@ import React, { useContext } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { FirebaseContext } from '../firebase';
 
+
+
+
 export default function Scoreboard(props) {
 	const usersHardcodedData = [
 		{
@@ -55,18 +58,16 @@ export default function Scoreboard(props) {
 
 	const { users } = props;
 
-	const Players = users
-		.sort((a, b) => b.score - a.score)
-		.map((userObj, id) => {
-			const { name, score } = userObj;
-			return (
-				<TableTR>
-					<TableTH>{1 + id}</TableTH>
-					<TableTH>{name}</TableTH>
-					<TableTH>{score}</TableTH>
-				</TableTR>
-			);
-		});
+	const Players = usersHardcodedData.sort((a, b) => b.score - a.score).map((userObj, id) => {
+		const { user, score } = userObj;
+		return (
+			<TableTR>
+				<TableTH>{1 + id}</TableTH>
+				<TableTH>{user}</TableTH>
+				<TableTH>{score}</TableTH>
+			</TableTR>
+		)
+	})
 
 	const addUsers = () => {
 		// fireBase.doUpdateUser({
@@ -94,26 +95,31 @@ export default function Scoreboard(props) {
 					<tbody>{Players}</tbody>
 				</Table>
 			</DivContainer>
-			<button onClick={addUsers}>Add Users</button>
+			{/* <button onClick={addUsers}>Add Users</button> */}
 		</ThemeProvider>
 	);
 }
 
 const theme = {
-	background: 'linear-gradient(to left, rgba(255,0,0,0), rgba(255,0,0,1))',
-	primary: '#edb51c',
-	secondary: '#43e838'
-};
+
+	primary: "#edb51c",
+	secondary: "#43e838",
+	ackground: 'rgb(131,58,180)',
+	background: 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)'
+}
 
 const DivContainer = styled.div`
 	background: ${props => props.theme.background};
+  background: ${props => props.theme.gradientBackground};
 	margin: 0 auto;
-	width: 80%;
-	/* border: 3px solid black; */
-`;
+	width: 100%;
+	flex-basis: 35%;
+  color: white;
+
+`
 const Table = styled.table`
-	margin-top: 20px;
-`;
+	/* margin-top: 20px; */
+`
 
 const TableHead = styled.thead`
 	background: #111;
@@ -124,7 +130,6 @@ const TableTR = styled.tr`
 	text-align: center;
 	&:nth-child(odd) {
 		text-align: center;
-		/* background: linear-gradient(to left, rgba(255,0,0,0), rgba(255,0,0,1)) */
 	}
 `;
 
@@ -133,6 +138,5 @@ const TableTH = styled.th`
 
 	&:nth-child(odd) {
 		text-align: center;
-		/* background: linear-gradient(to left, rgba(255,0,0,0), rgba(255,0,0,1)) */
 	}
 `;
