@@ -9,7 +9,6 @@ export default function Landing(props) {
 	const [redirect, setRedirect] = useState(false);
 	const [error, setError] = useState(null);
 	const fireBase = useContext(FirebaseContext);
-
 	const createRoom = () => {
 		const { user } = props;
 		const { isLoggedIn } = user;
@@ -27,6 +26,10 @@ export default function Landing(props) {
 		} else {
 			setError('You must be logged in to create a room.');
 		}
+	};
+	const joinRoom = () => {
+		setRoomId(state);
+		setRedirect(!redirect);
 	};
 	return !redirect ? (
 		<ThemeProvider theme={theme}>
@@ -48,8 +51,7 @@ export default function Landing(props) {
 						type='text'
 						placeholder='Join a Room'
 					/>
-
-					<Button onClick={() => setRedirect(!redirect)}>Join </Button>
+					<Button onClick={joinRoom}>Join </Button>
 				</DivInput>
 			</DivContainer>
 		</ThemeProvider>

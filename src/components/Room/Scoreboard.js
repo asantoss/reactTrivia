@@ -2,9 +2,6 @@ import React, { useContext } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { FirebaseContext } from '../firebase';
 
-
-
-
 export default function Scoreboard(props) {
 	const usersHardcodedData = [
 		{
@@ -59,29 +56,18 @@ export default function Scoreboard(props) {
 
 	const { users } = props;
 
-	const Players = usersHardcodedData.sort((a, b) => b.score - a.score).map((userObj, id) => {
-
-		const { name, score } = userObj;
-		return (
-			<TableTR>
-				<TableTH>{1 + id}</TableTH>
-				<TableTH>{name}</TableTH>
-				<TableTH>{score}</TableTH>
-			</TableTR>
-		)
-	})
-
-	const addUsers = () => {
-		fireBase.doUpdateUser({
-			roomId: '38CXzxbp15uoeoGdvWoB',
-			userId: 768763249,
-			payload: { score: 35 }
+	const Players = users
+		.sort((a, b) => b.score - a.score)
+		.map((userObj, id) => {
+			const { name, score } = userObj;
+			return (
+				<TableTR>
+					<TableTH>{1 + id}</TableTH>
+					<TableTH>{name}</TableTH>
+					<TableTH>{score}</TableTH>
+				</TableTR>
+			);
 		});
-
-		usersHardcodedData.forEach(name =>
-			fireBase.doAddUserToRoom('UxtXPxyiyuzNLS2OMCjA', name)
-		);
-	};
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -106,23 +92,23 @@ const theme = {
 	// primary: "#edb51c",
 	// secondary: "#43e838",
 	background: 'rgb(131,58,180)',
-	background: 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)',
-	color: 'white',
-}
+	background:
+		'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)',
+	color: 'white'
+};
 
 const DivContainer = styled.div`
 	background: ${props => props.theme.background};
-  background: ${props => props.theme.gradientBackground};
+	background: ${props => props.theme.gradientBackground};
 	margin: 0 auto;
 	width: 100%;
 	flex-basis: 35%;
 	color: ${props => props.theme.color};
 	box-shadow: 5px 5px #888888;
-
-`
+`;
 const Table = styled.table`
 	/* margin-top: 20px; */
-`
+`;
 
 const TableHead = styled.thead`
 	background: #111;
@@ -131,7 +117,7 @@ const TableHead = styled.thead`
 
 const TableTR = styled.tr`
 	text-align: center;
-	
+
 	&:nth-child(odd) {
 		text-align: center;
 	}
