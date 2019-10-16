@@ -56,7 +56,7 @@ export default function UserUI(props) {
               </div>
             </UList>
           </div>
-          <button onClick={submitChoice}>Submit</button>
+          <Button onClick={submitChoice}>Submit</Button>
 
         </DivMain>
 
@@ -122,7 +122,7 @@ const UList = styled.ul`
 
 const List = styled.li`
   border: 1px white solid; 
-  background: ${({ color }) => { if (color === 0) { return 'yellow' } else if (color === 1) { return 'green' } else if (color === 2) { return 'red' } else { return 'blue' } }};
+  background: ${({ color }) => { if (color === 0) { return 'yellow' } else if (color === 1) { return 'green' } else if (color === 2) { return 'red' } else { return 'royalblue' } }};
 /* padding: 2vh 5vh;  */
 width: 15vw;
 height: 10vh;
@@ -132,5 +132,29 @@ display: flex;
 justify-content: center;
 align-items: center;
 font-weight: ${ props => props.theme.fontWeight};
+`
+
+const Button = styled.button`
+  
+    background-color: white; 
+    color: black; 
+    border: 2px solid #4CAF50;
+    padding: 12px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin-top: 5vh;
+
+    &:hover{
+      background-color: #4CAF50;
+      color: white;
+    }
+
+
 `
 
