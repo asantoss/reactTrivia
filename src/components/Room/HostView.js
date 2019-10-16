@@ -28,7 +28,7 @@ export default function HostView({ room, users }) {
 		e.preventDefault();
 		setGame([...game, question]);
 		setQuestion({ question: '', choices: [], answer: '' });
-		setChoice({ type: 'text', value: '' });
+		setChoice('');
 	};
 	const submitQuestionToDb = question => {
 		const { id } = room;
@@ -90,7 +90,6 @@ export default function HostView({ room, users }) {
 				</div>
 			</div>
 			<div>
-				<li value={choice}>{choice}</li>
 				{game.map((questionObj, i) => {
 					const { text, choices } = questionObj;
 					return (
@@ -104,11 +103,6 @@ export default function HostView({ room, users }) {
 							</button>
 						</div>
 					);
-				})}
-				{users.map(e => {
-					if (e.responses) {
-						return <p>{e.responses[0].userAnswer}</p>;
-					}
 				})}
 				<Scoreboard users={users} />
 			</div>

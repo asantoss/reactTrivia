@@ -54,35 +54,36 @@ class Room extends Component {
 		const { id: roomId } = this.props.match.params;
 		this.userUnsub = fireBase.doUsersListen(roomId, res => {
 			const usersFromDb = res.docs.map(e => e.data());
-			if (!usersFromDb.includes(user) && user.id) {
-				fireBase.doAddUserToRoom(roomId, user).then(() =>
-					this.setState(prevState => ({
-						...prevState,
-						users: [...usersFromDb]
-					}))
-				);
-			} else {
-				this.setState(prevState => ({ ...prevState, users: [...usersFromDb] }));
-			}
+			this.setState(prevState => ({ ...prevState, users: [...usersFromDb] }));
 		});
 		this.roomUnsub = this.props.fireBase.doRoomListen(roomId, room => {
 			const roomObj = room.data();
-			roomObj.hostId === this.props.user.id && this.setState({ host: true });
+			roomObj.hostId === this.props.user.id && this.setState({ isHost: true });
 			this.setState({ room: { ...roomObj } });
 		});
+		if (!this.state.users.includes(user) && user.id) {
+			fireBase.doAddUserToRoom(roomId, user);
+		}
 	}
 	componentWillUnmount() {
 		this.userUnsub();
 		this.roomUnsub();
 	}
 
-	submitUserResponse = response => {
+	submitUserResponse = async response => {
 		const { room } = this.state;
 		const { user, fireBase } = this.props;
-		if (response.userAnswer === room.currentQuestion.answer) {
-			fireBase.doUserScore({ roomId: room.id, userId: user.id, score: 20 });
+		if (
+			response.userAnswer.toLowerCase() ===
+			room.currentQuestion.answer.toLowerCase()
+		) {
+			await fireBase.doUserScore({
+				roomId: room.id,
+				userId: user.id,
+				score: 20
+			});
 		}
-		fireBase.doAddUserResponse({
+		await fireBase.doAddUserResponse({
 			roomId: room.id,
 			userId: user.id,
 			payload: response

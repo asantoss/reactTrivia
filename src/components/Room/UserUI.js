@@ -12,16 +12,16 @@ export default function UserUI({ room, users, submitResponse }) {
 	};
 
 	const submitChoice = () => {
-		const { currentQuestions } = room;
+		const { currentQuestion } = room;
 		const response = {
-			question: currentQuestions.text,
+			question: currentQuestion.text,
 			userAnswer: choice,
-			correctAnwer: currentQuestions.answer
+			correctAnwer: currentQuestion.answer
 		};
 		submitResponse(response);
 	};
 
-	const choices = ['React', 'Vue', 'Angular', 'Svelt'];
+	const { choices } = room.currentQuestion;
 	return (
 		<ThemeProvider theme={theme}>
 			<DivContainer>
