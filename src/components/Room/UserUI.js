@@ -2,7 +2,8 @@ import React, { useState, useContext } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { FirebaseContext } from '../firebase';
 import Scoreboard from './Scoreboard';
-import Timer from './Timer';
+import ButtonContainer from '../containers/ButtonContainer';
+import TimerContainer from '../containers/TimerContainer';
 
 export default function UserUI({ room, users, submitResponse }) {
   const [choice, setChoice] = useState('');
@@ -15,6 +16,7 @@ export default function UserUI({ room, users, submitResponse }) {
   };
 
   const submitChoice = () => {
+    console.log('hey')
     const { currentQuestion } = room;
     const response = {
       question: currentQuestion.text,
@@ -38,7 +40,7 @@ export default function UserUI({ room, users, submitResponse }) {
             <P>{room.currentQuestion.text}</P>
           </div>
 
-          <Timer startCount={30} />
+          <TimerContainer startCount={30} />
 
           <div className='answers'>
             <UList>
@@ -89,7 +91,7 @@ export default function UserUI({ room, users, submitResponse }) {
               </div>
             </UList>
           </div>
-          <Button onClick={submitChoice} disabled={isDisabled}>{!isDisabled ? "Submit" : "Submitted"}</Button>
+          <ButtonContainer onClick={submitChoice} />
         </DivMain>
 
         <Scoreboard users={users} />
@@ -188,44 +190,6 @@ const List = styled.li`
 `;
 
 
-const Button = styled.button`
-  background-color: white; 
-  color: black; 
-  border: 2px solid #4CAF50;
-  padding: 12px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  -webkit-transition-duration: 0.4s;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  
-  &:hover{
-  background-color: ${({ disabled }) => {
-    if (disabled) {
-      return '#cccccc';
-    } else {
-      return '#4CAF50'
-    }
-  }};
- 
-    color: ${({ disabled }) => {
-    if (disabled) {
-      return '#666666'
-    } else {
-      return 'white'
-    }
-  }};
-    border: ${({ disabled }) => {
-    if (disabled) {
-      return '2px solid #999999'
-    } else {
-      return 'none'
-    }
-  }};
-  }
-`
+
 
 

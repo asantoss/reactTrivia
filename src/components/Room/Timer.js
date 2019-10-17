@@ -67,6 +67,7 @@ export default class Timer extends Component {
     this.myInterval = setInterval(() => {
       if (this.state.count <= 0) {
         clearInterval(this.myInterval);
+        this.props.onTimeOut()
       }
       this.setState(prevState => ({
         count: prevState.count - 1 > 0 ? prevState.count - 1 : 0
