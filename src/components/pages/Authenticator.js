@@ -42,18 +42,39 @@ class Authenticator extends Component {
 	handleSignIn = e => {
 		const { email, password } = this.state.user;
 		const { fireBase, authenticateUser } = this.props;
-		e.preventDefault();
-		fireBase
-			.doSignInWithEmailAndPassword(email, password)
-			.then(user => {
-				authenticateUser({
-					id: user.uid,
-					name: user.displayName
+		if ((email, password)) {
+			e.preventDefault();
+			fireBase
+				.doSignInWithEmailAndPassword(email, password)
+				.then(user => {
+					authenticateUser({
+						id: user.uid,
+						name: user.displayName
+					});
+				})
+				.catch(e => {
+					this.setState({ ...this.state, error: true });
 				});
-			})
-			.catch(e => {
-				this.setState({ ...this.state, error: true });
+		} else {
+			this.setState({ error: true });
+		}
+	};
+	handleSignInAnon = async e => {
+		e.preventDefault();
+		const { fireBase, authenticateUser } = this.props;
+		if (this.state.user['nickname']) {
+			const displayName = this.state.user.nickname;
+			await fireBase.doSignInAnon();
+			const user = await fireBase.doUpdateUserInfo({
+				displayName
 			});
+			authenticateUser({
+				id: user.uid,
+				name: user.displayName
+			});
+		} else {
+			this.setState({ user: { nickname: '' } });
+		}
 	};
 
 	handleChange = event => {
@@ -71,7 +92,9 @@ class Authenticator extends Component {
 		//Checks to see if it is the signup page in the URL and sets isSignup : true or false
 		const isSignUp = this.props.match.url === '/signup';
 		return this.props.user.isLoggedIn ? (
-			<Redirect to='/' />
+			<Redirect
+				to={this.props.location.state ? this.props.location.state.from : '/'}
+			/>
 		) : (
 			<ThemeProvider theme={theme}>
 				<Form onSubmit={isSignUp ? this.handleSignUp : this.handleSignIn}>
@@ -101,6 +124,9 @@ class Authenticator extends Component {
 						})}
 						<div>
 							<Button type='submit'>{isSignUp ? 'Sign Up' : 'Sign In'}</Button>
+							<Button onClick={this.handleSignInAnon}>
+								Sign in anonymously!
+							</Button>
 							{!isSignUp && (
 								<label>
 									<Input

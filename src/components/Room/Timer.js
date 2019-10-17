@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
@@ -12,7 +13,6 @@ export default class Timer extends Component {
 
   render() {
     const { count } = this.state;
-
     let circleArray = [];
     const width = 100;
 
@@ -31,7 +31,7 @@ export default class Timer extends Component {
         transform: rotate(${rotation}deg) translate(0px, -${width / 2}px);
       `;
       circleArray.push(
-        <TicTac />
+        <TicTac key={i} />
       )
     }
 
@@ -56,7 +56,6 @@ export default class Timer extends Component {
     )
   }
 
-
   //!! this is where i want to decrement my count
   componentDidMount() {
     // const { startCount } = this.props;
@@ -66,7 +65,6 @@ export default class Timer extends Component {
 
     //!!Set interval 
     this.myInterval = setInterval(() => {
-
       if (this.state.count <= 0) {
         clearInterval(this.myInterval);
       }

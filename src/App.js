@@ -8,7 +8,7 @@ import Firebase, { FirebaseContext } from './components/firebase';
 import Scoreboard from './components/Room/Scoreboard';
 import Game from './components/Room/Game';
 import Authenticator from './components/containers/AuthenticatorContainer';
-import Timer from './components/Room/Timer';
+
 import UserUI from './components/Room/UserUI';
 
 function App() {

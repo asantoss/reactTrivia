@@ -1,4 +1,4 @@
-import app from 'firebase/app';
+import app, { firestore } from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 const firebaseConfig = {
@@ -35,6 +35,10 @@ class Firebase {
 			.then(() => this.auth.signInWithEmailAndPassword(email, password));
 		return response.user;
 	};
+	doSignInAnon = async () => {
+		const response = await this.auth.signInAnonymously();
+		return response.user;
+	};
 
 	doSignOut = () => this.auth.signOut();
 
@@ -61,11 +65,14 @@ class Firebase {
 	};
 	doCreateRoom = async (roomName, hostUser) => {
 		const room = await this.database.collection('rooms').doc();
-		// room.collection('users').add({ ...hostUser });
+		room
+			.collection('users')
+			.doc(hostUser.id)
+			.set({ name: hostUser.name, id: hostUser.id, roomId: room.id });
 		await room.set({
 			id: room.id,
 			roomName: roomName,
-			host: { ...hostUser },
+			hostId: hostUser.id,
 			url: `${urlPath}`,
 			currentQuestion: {
 				question: '',
@@ -97,9 +104,12 @@ class Firebase {
 			.collection('rooms')
 			.doc(roomId)
 			.collection('users')
-			.doc()
+			.doc(user.id)
 			.set({
-				...user
+				id: user.id,
+				name: user.name,
+				roomId: roomId,
+				score: 0
 			});
 	};
 	doGetUsersInRoom = async roomId => {
@@ -116,20 +126,29 @@ class Firebase {
 		console.log(rooms.docs.map(doc => doc.data()));
 	};
 	doUpdateUser = async ({ roomId, userId, payload } = {}) => {
-		const query = await this.database
+		await this.database
 			.collection('rooms')
 			.doc(roomId)
 			.collection('users')
-			.where('id', '==', userId)
-			.get();
-		const doc = await query.docs;
-		const userDocument = doc[0];
-		await this.database
-			.collection('/rooms')
+			.doc(userId)
+			.update({ ...payload });
+	};
+	doUserScore = async ({ roomId, userId, score } = {}) => {
+		return await this.database
+			.collection('rooms')
 			.doc(roomId)
 			.collection('users')
-			.doc(userDocument.id)
-			.update({ ...payload });
+			.doc(userId)
+			.update({ score: firestore.FieldValue.increment(score) });
+	};
+	doAddUserResponse = async ({ roomId, userId, payload } = {}) => {
+		console.log(roomId, userId, payload)
+		return await this.database
+			.collection('rooms')
+			.doc(roomId)
+			.collection('users')
+			.doc(userId)
+			.update({ responses: firestore.FieldValue.arrayUnion({ ...payload }) });
 	};
 }
 

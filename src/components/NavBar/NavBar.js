@@ -17,12 +17,6 @@ function NavBar(props) {
 			<div className='Logo_Container'>
 				<img src='' alt='' />
 				<span>Trivia-DOM</span>
-
-				<Burger isOpen={true}>
-					<span>&nbsp;</span>
-					<span>&nbsp;</span>
-					<span>&nbsp;</span>
-				</Burger>
 			</div>
 
 			<div className='NavLinks_Container'>
@@ -64,18 +58,6 @@ const Burger = styled.div`
 		border-bottom: 2px solid black;
 		margin: 0;
 		line-height: 0.5;
-	}
-	span:first-child {
-		/* border-top: 2px dotted black; */
-		transform: ${({ isOpen }) => isOpen && 'rotate(135deg)'};
-		transform-origin: top left;
-	}
-	span:nth-child(2) {
-		display: ${({ isOpen }) => isOpen && 'none'};
-	}
-	span:last-child {
-		transform: ${({ isOpen }) => isOpen && 'rotate(-135deg)'};
-		transform-origin: bottom left;
 	}
 `;
 
