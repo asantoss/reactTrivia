@@ -72,29 +72,30 @@ export default function HostView({ room, users }) {
 	return (
 		<CreateGameContainer>
 			{error && <p>{error}</p>}
+			<header>{room.roomName}</header>
 			<div className='question_form'>
-				<div className='Question'>
-					<HostInput
-						id='question'
-						width='large'
-						onChange={e => {
-							setQuestion(e.target.value);
-							setError('');
-						}}
-						value={question.text}
-						placeholder='Question'
-						label='Question'
-						name='question'
-						margin='normal'
-						required
-					/>
-				</div>
 				<form action='' onSubmit={addToGame} method='post'>
+					<div className='Question'>
+						<HostInput
+							id='question'
+							width='large'
+							onChange={e => {
+								setQuestion(e.target.value);
+								setError('');
+							}}
+							value={question.text}
+							placeholder='Question'
+							label='Question'
+							name='question'
+							margin='normal'
+							required
+						/>
+					</div>
 					<div>
 						{choices.map((e, i) => {
 							return (
 								<HostInput
-									label='Choice'
+									label={`Choice ${i + 1}`}
 									key={i}
 									id={`choice${i}`}
 									onChange={e => handleChoice(e, i)}
@@ -105,7 +106,7 @@ export default function HostView({ room, users }) {
 						})}
 					</div>
 					{choices[0] && (
-						<div style={{ padding: '15px' }}>
+						<div className='question_choices'>
 							<InputLabel htmlFor='answer'>Answer</InputLabel>
 							<AnswerSelect
 								defaultValue='Answer'
@@ -130,12 +131,16 @@ export default function HostView({ room, users }) {
 							</AnswerSelect>
 						</div>
 					)}
-					<Button type='Submit' variant='contained' color='success'>
+					<Button type='Submit' variant='contained' color='primary'>
 						Add Question
 					</Button>
 				</form>
 			</div>
-			<div>
+
+			<div className='scoreboard_host'>
+				<Scoreboard users={users} />
+			</div>
+			<div className='card_container'>
 				{game.map((questionObj, i) => {
 					const { question, choices } = questionObj;
 					return (
@@ -186,14 +191,13 @@ export default function HostView({ room, users }) {
 						</QuestionCard>
 					);
 				})}
-				<Scoreboard users={users} />
 			</div>
 		</CreateGameContainer>
 	);
 }
 
 const HostInput = styled(TextField)`
-	width: ${({ width }) => (width === 'large' ? '300px' : '150px')};
+	width: ${({ width }) => (width === 'large' ? '300px' : '100px')};
 	margin: 20px !important;
 `;
 const AnswerSelect = styled(Select)`
@@ -214,17 +218,35 @@ const QuestionCard = styled(Card)`
 
 const CreateGameContainer = styled.div`
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-between;
-	flex-direction: column;
-	margin: auto;
+	/* flex-direction: column; */
+	padding: 10px;
+	margin: auto 50px;
 	.question_form {
 		height: 50vh;
+		width: 50%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: space-evenly;
+		justify-content: center;
 		.Question {
 			display: flex;
+			justify-content: center;
+			margin: 50px;
 		}
+		.question_choices {
+			padding: 15px;
+			display: flex;
+		}
+	}
+	.scoreboard_host {
+		width: 50%;
+		/* display: flex;
+		align-items: center; */
+		margin: auto;
+	}
+	.card_container {
+		flex-grow: 2;
 	}
 `;
