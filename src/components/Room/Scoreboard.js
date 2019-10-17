@@ -1,58 +1,56 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import { FirebaseContext } from '../firebase';
 
 export default function Scoreboard(props) {
-	const usersHardcodedData = [
-		{
-			name: 'Juanito',
-			id: 768763241,
-			score: 95
-		},
-		{
-			name: 'Joetta',
-			id: 768763242,
-			score: 93
-		},
-		{
-			name: 'Alex',
-			id: 768763243,
-			score: 91
-		},
-		{
-			name: 'Ron',
-			id: 768763244,
-			score: 91
-		},
-		{
-			name: 'Tim',
-			id: 768763245,
-			score: 107
-		},
-		{
-			name: 'Renna',
-			id: 768763246,
-			score: 56
-		},
-		{
-			name: 'Anthony',
-			id: 768763247,
-			score: 106
-		},
-		{
-			name: 'Jordan',
-			id: 768763248,
-			score: 100
-		},
-		{
-			name: 'Jesus',
-			id: 768763249,
-			score: 96
-		}
-	];
+	// const usersHardcodedData = [
+	// 	{
+	// 		name: 'Juanito',
+	// 		id: 768763241,
+	// 		score: 95
+	// 	},
+	// 	{
+	// 		name: 'Joetta',
+	// 		id: 768763242,
+	// 		score: 93
+	// 	},
+	// 	{
+	// 		name: 'Alex',
+	// 		id: 768763243,
+	// 		score: 91
+	// 	},
+	// 	{
+	// 		name: 'Ron',
+	// 		id: 768763244,
+	// 		score: 91
+	// 	},
+	// 	{
+	// 		name: 'Tim',
+	// 		id: 768763245,
+	// 		score: 107
+	// 	},
+	// 	{
+	// 		name: 'Renna',
+	// 		id: 768763246,
+	// 		score: 56
+	// 	},
+	// 	{
+	// 		name: 'Anthony',
+	// 		id: 768763247,
+	// 		score: 106
+	// 	},
+	// 	{
+	// 		name: 'Jordan',
+	// 		id: 768763248,
+	// 		score: 100
+	// 	},
+	// 	{
+	// 		name: 'Jesus',
+	// 		id: 768763249,
+	// 		score: 96
+	// 	}
+	// ];
 	//TODO: all the user are hardcoded, needs to be set up to where i can fetch them from
 	//TODO: firebase
-	const fireBase = useContext(FirebaseContext);
 
 	const { users } = props;
 
@@ -91,7 +89,6 @@ export default function Scoreboard(props) {
 const theme = {
 	// primary: "#edb51c",
 	// secondary: "#43e838",
-	background: 'rgb(131,58,180)',
 	background:
 		'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)',
 	color: 'white'

@@ -1,11 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FirebaseContext } from '../firebase';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 function NavBar(props) {
-	const [isOpen, setisOpen] = useState(true);
 	const { isLoggedIn } = props.user;
 	const fireBase = useContext(FirebaseContext);
 	const handleLogout = async () => {
@@ -46,20 +45,20 @@ function NavBar(props) {
 	);
 }
 
-const Burger = styled.div`
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	height: 100px;
-	margin: auto;
-	span {
-		/* display: block; */
-		width: 25px;
-		border-bottom: 2px solid black;
-		margin: 0;
-		line-height: 0.5;
-	}
-`;
+// const Burger = styled.div`
+// 	display: flex;
+// 	flex-direction: column;
+// 	flex-wrap: nowrap;
+// 	height: 100px;
+// 	margin: auto;
+// 	span {
+// 		/* display: block; */
+// 		width: 25px;
+// 		border-bottom: 2px solid black;
+// 		margin: 0;
+// 		line-height: 0.5;
+// 	}
+// `;
 
 const NavBarContainer = styled.div`
 	display: flex;

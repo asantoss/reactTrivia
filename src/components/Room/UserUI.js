@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import { FirebaseContext } from '../firebase';
 import Scoreboard from './Scoreboard';
 import Timer from './Timer';
 
