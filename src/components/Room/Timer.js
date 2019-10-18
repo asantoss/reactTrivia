@@ -93,6 +93,7 @@ export default class Timer extends Component {
     if (this.props.question !== prevProps.question) {
 
       this.resetTimer();
+      this.props.onChange();
     }
   }
 

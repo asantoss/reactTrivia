@@ -41,18 +41,17 @@ export default function Scoreboard(props) {
 }
 
 const theme = {
-	// primary: "#edb51c",
-	// secondary: "#43e838",
-	background: 'rgb(131,58,180)',
+
+	background: 'rgb(233,143,26)',
 	background:
-		'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)',
+		'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)',
 	color: 'white'
 };
 
 const DivContainer = styled.div`
 	background: ${props => props.theme.background};
 	background: ${props => props.theme.gradientBackground};
-	margin: 0 auto;
+	margin: 5vh auto;
 	width: 100%;
 	flex-basis: 35%;
 	color: ${props => props.theme.color};
@@ -60,7 +59,7 @@ const DivContainer = styled.div`
 
 		@media (max-width: 768px) {
     width: 80%;
-		margin: 0 auto;
+		margin: 5vh auto;
 
   }
 

@@ -105,26 +105,23 @@ const theme = {
 };
 
 const P = styled.p`
-	border: 1px solid black;
+	
 	width: 90%;
-	padding: 10px;
+	padding: 20px;
 	text-align: center;
 	box-shadow: 5px 5px #888888;
 	font-size: 1.3rem;
 	margin: 0 auto;
 	margin-bottom: 10vh;
-	background: rgb(131, 58, 180);
-	background: linear-gradient(
-		90deg,
-		rgba(131, 58, 180, 1) 0%,
-		rgba(253, 29, 29, 1) 50%,
-		rgba(252, 176, 69, 1) 100%
-	);
+	background: #1F06F0;
+  opacity: .9;
 	color: ${props => props.theme.color};
 	font-weight: ${props => props.theme.fontWeight};
+  margin-top: 5vh;
 `;
 
 const DivContainer = styled.div`
+  
 	display: flex;
 	flex-direction: row;
   @media (max-width: 768px) {
@@ -140,7 +137,7 @@ export const DivScoreboard = styled.div`
 	flex-basis: 35%;
 	background: black;
 	color: white;
-	height: 100vh;
+	/* height: 100vh; */
   
   @media (max-width: 768px) {
     flex-basis: 80%;
@@ -161,11 +158,12 @@ const UList = styled.ul`
 	width: 60%;
 	margin: 0 auto;
 	margin-top: 12vh;
- 
+  margin-bottom: 5vh;
+  justify-content: center;
 
   @media (max-width: 768px) {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
 	  align-items: center;
     padding: 0;
@@ -177,17 +175,17 @@ const List = styled.li`
     border ? '1px solid black' : '1px solid white'}; */
 	background: ${({ color }) => {
     if (color === 0) {
-      return 'yellow';
+      return 'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)';
     } else if (color === 1) {
-      return 'green';
+      return 'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)';
     } else if (color === 2) {
-      return 'red';
+      return 'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)';
     } else {
-      return 'royalblue';
+      return 'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)';
     }
   }};
 	/* padding: 2vh 5vh;  */
-	width: 15vw;
+	width: 20vw;
 	height: 10vh;
 	margin: 10px 5px;
 	box-shadow: 3px 3px #888888;

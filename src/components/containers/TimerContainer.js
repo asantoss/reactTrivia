@@ -8,7 +8,8 @@ let matchStateToProps = (state) => {
 let matchDispatchToProps = (dispatch) => {
   return {
 
-    onTimeOut: () => dispatch({ type: 'DISABLE_BUTTON' })
+    onTimeOut: () => dispatch({ type: 'DISABLE_BUTTON' }),
+    onChange: () => dispatch({ type: 'ENABLE_BUTTON' })
   }
 }
 

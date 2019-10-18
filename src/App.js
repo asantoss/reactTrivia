@@ -6,13 +6,7 @@ import Landing from './components/containers/LandingContainer';
 import Room from './components/containers/RoomContainer';
 import Firebase, { FirebaseContext } from './components/firebase';
 import Authenticator from './components/containers/AuthenticatorContainer';
-<<<<<<< HEAD
-
-import UserUI from './components/Room/UserUI';
-
-=======
 import Homepage from './components/pages/Home';
->>>>>>> master
 function App() {
 	return (
 		<FirebaseContext.Provider value={new Firebase()}>

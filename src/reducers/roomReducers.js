@@ -8,6 +8,11 @@ let roomReducer = (state = initialState, action) => {
       ...state,
       buttonDisable: true,
     }
+  } else if (action.type === "ENABLE_BUTTON") {
+    return {
+      ...state,
+      buttonDisable: false,
+    }
   }
   return state;
 }
