@@ -56,6 +56,11 @@ class Room extends Component {
 	// changeHost = hostId => {
 	// 	const { fireBase } = this.props;
 	// };
+	sendNewRoomName = name => {
+		debugger;
+		const { fireBase } = this.props;
+		fireBase.doUpdateRoom(this.state.room.id, { roomName: name });
+	};
 	render() {
 		const { room, users } = this.state;
 		const { isLoggedIn } = this.props.user;
@@ -63,7 +68,9 @@ class Room extends Component {
 		if (room && isLoggedIn) {
 			return this.state.isHost ? (
 				<div>
-					<HostView room={room} users={users} />
+					<HostView
+						{...{ room, users, sendNewRoomName: this.sendNewRoomName }}
+					/>
 				</div>
 			) : (
 				<UserUi

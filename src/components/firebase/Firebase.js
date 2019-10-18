@@ -63,12 +63,15 @@ class Firebase {
 			.collection('users')
 			.onSnapshot(callback);
 	};
+	doUpdateRoom = (roomId, payload) => {
+		this.database
+			.collection('rooms')
+			.doc(roomId)
+			.update({ ...payload });
+	};
 	doCreateRoom = async (roomName, hostUser) => {
 		const room = await this.database.collection('rooms').doc();
-		room
-			.collection('users')
-			.doc(hostUser.id)
-			.set({ name: hostUser.name, id: hostUser.id, roomId: room.id });
+		await this.doAddUserToRoom(room.id, hostUser.id);
 		await room.set({
 			id: room.id,
 			roomName: roomName,
