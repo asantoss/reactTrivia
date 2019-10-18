@@ -1,102 +1,27 @@
-import React, { useState, useContext } from 'react';
-import { NavLink } from 'react-router-dom';
-import { FirebaseContext } from '../firebase';
+import React, { useState, Component } from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import SignedInLinks from '../containers/LogoutContainer';
+import SignedOutLinks from './SignedOutLinks';
 
-function NavBar(props) {
-	const [isOpen, setisOpen] = useState(true);
-	const { isLoggedIn } = props.user;
-	const fireBase = useContext(FirebaseContext);
-	const handleLogout = async () => {
-		await fireBase.doSignOut();
-		props.logOut();
-	};
-	return (
-		<NavBarContainer>
-			<div className='Logo_Container'>
-				<img src='' alt='' />
-				<span>Trivia-DOM</span>
-			</div>
+class Navbar extends Component {
+	render() {
+		const { user } = this.props;
 
-			<div className='NavLinks_Container'>
-				<NavLink className='NavLink' to='/' activeClassName='NavLink active'>
-					Home
-				</NavLink>
-				<NavLink
-					className='NavLink'
-					to='/profile'
-					activeClassName='NavLink active'>
-					Profile
-				</NavLink>
-				{isLoggedIn ? (
-					<div className='NavLink' onClick={handleLogout}>
-						Sign Out
-					</div>
-				) : (
-					<NavLink
-						className='NavLink'
-						to='/signin'
-						activeClassName='NavLink active'>
-						Sign In
-					</NavLink>
-				)}
-			</div>
-		</NavBarContainer>
-	);
+		return (
+			<nav className='nav-wrapper red darken-3'>
+				<div className='container '>
+					<Link to='/home'></Link>
+					{user.isLoggedIn ? <SignedInLinks /> : null}
+					{!user.isLoggedIn ? <SignedOutLinks /> : null}
+				</div>
+			</nav>
+		);
+	}
 }
 
-const Burger = styled.div`
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	height: 100px;
-	margin: auto;
-	span {
-		/* display: block; */
-		width: 25px;
-		border-bottom: 2px solid black;
-		margin: 0;
-		line-height: 0.5;
-	}
-`;
-
-const NavBarContainer = styled.div`
-	display: flex;
-	margin: auto;
-	padding: 15px;
-	height: 10vh;
-	width: 80vw;
-	justify-content: space-between;
-	align-content: center;
-	.NavLinks_Container {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		padding: 0px 15px;
-		width: 50%;
-		.NavLink {
-			text-decoration: none;
-			color: ${({ color }) => (color ? color : 'black')};
-			&:hover {
-				cursor: pointer;
-			}
-		}
-	}
-	.Logo_Container {
-	}
-`;
-
-const mapToState = state => ({
+const mapStateToProps = state => ({
 	...state
 });
 
-const mapToDispatch = dispatch => payload => ({
-	logOut: () => dispatch({ type: 'LOGOUT' }),
-	logIn: () => dispatch({ type: 'LOGIN', payload: { ...payload } })
-});
-
-export default connect(
-	mapToState,
-	mapToDispatch
-)(NavBar);
+export default connect(mapStateToProps)(Navbar);
