@@ -6,13 +6,15 @@ import Landing from './components/containers/LandingContainer';
 import Room from './components/containers/RoomContainer';
 import Firebase, { FirebaseContext } from './components/firebase';
 import Authenticator from './components/containers/AuthenticatorContainer';
-
+import Homepage from './components/pages/Home';
 function App() {
 	return (
 		<FirebaseContext.Provider value={new Firebase()}>
 			<Router>
 				<div className='App'>
-					<NavBar color />
+					<NavBar />
+					<Route exact path='/home' component={Homepage} />
+					<Route exact path='/' component={Landing} />
 					<Route path='/rooms/:id' component={Room} />
 					<Route exact path='/signin' component={Authenticator} />
 					<Route exact path='/signup' component={Authenticator} />
