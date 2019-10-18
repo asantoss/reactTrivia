@@ -7,19 +7,33 @@ export default function Landing(props) {
 	const [state, setstate] = useState('');
 	const [roomId, setRoomId] = useState('');
 	const [redirect, setRedirect] = useState(false);
+	const [error, setError] = useState(null);
 	const fireBase = useContext(FirebaseContext);
-
 	const createRoom = () => {
-		fireBase
-			.doCreateRoom({ name: state }, { user: 'Juan', id: 456, score: 0 })
-			.then(res => {
-				debugger;
-				setRoomId(res);
-				setRedirect(!redirect);
-			});
+		const { user } = props;
+		const { isLoggedIn } = user;
+		if (isLoggedIn) {
+			fireBase
+				.doCreateRoom(state, props.user)
+				.then(res => {
+					error !== null && setError(null);
+					setRoomId(res);
+					setRedirect(!redirect);
+				})
+				.catch(e => {
+					setError('There was an error creating the room.');
+				});
+		} else {
+			setError('You must be logged in to create a room.');
+		}
+	};
+	const joinRoom = () => {
+		setRoomId(state);
+		setRedirect(!redirect);
 	};
 	return !redirect ? (
 		<ThemeProvider theme={theme}>
+			{error && <p style={{ color: 'red' }}>{error}</p>}
 			<H1>Join or Create a Room!</H1>
 			<DivContainer>
 				<DivInput>
@@ -28,25 +42,21 @@ export default function Landing(props) {
 						type='text'
 						placeholder='Create a Room'
 					/>
-
 					<Button onClick={createRoom}>Create</Button>
 				</DivInput>
-
 				<br />
-
 				<DivInput>
 					<Input
 						onChange={e => setstate(e.target.value)}
 						type='text'
 						placeholder='Join a Room'
 					/>
-
-					<Button onClick={() => setRedirect(!redirect)}>Join </Button>
+					<Button onClick={joinRoom}>Join </Button>
 				</DivInput>
 			</DivContainer>
 		</ThemeProvider>
 	) : (
-		<Redirect to={`/room/${roomId}`} />
+		<Redirect to={`/rooms/${roomId}`} />
 	);
 }
 
