@@ -27,6 +27,11 @@ const StyledButton = styled.button`
   -webkit-transition-duration: 0.4s;
   transition-duration: 0.4s;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    margin-bottom: 5vh;
+    
+  }
   
   &:hover{
   background-color: ${({ disabled }) => {

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { FirebaseContext } from '../firebase';
 import Scoreboard from './Scoreboard';
@@ -7,8 +7,8 @@ import TimerContainer from '../containers/TimerContainer';
 
 export default function UserUI({ room, users, submitResponse }) {
   const [choice, setChoice] = useState('');
-  const [isDisabled, setDisabled] = useState(false)
-
+  const [isDisabled, setDisabled] = useState(false);
+  // const timer = 30
 
 
   const pickChoice = e => {
@@ -16,7 +16,6 @@ export default function UserUI({ room, users, submitResponse }) {
   };
 
   const submitChoice = () => {
-    console.log('hey')
     const { currentQuestion } = room;
     const response = {
       question: currentQuestion.text,
@@ -40,7 +39,7 @@ export default function UserUI({ room, users, submitResponse }) {
             <P>{room.currentQuestion.text}</P>
           </div>
 
-          <TimerContainer startCount={30} />
+          <TimerContainer startCount={30} question={room.currentQuestion.text} />
 
           <div className='answers'>
             <UList>
@@ -52,10 +51,10 @@ export default function UserUI({ room, users, submitResponse }) {
                       value={e}
                       color={i}
                       style={{
-                        border:
-                          choice === e ? '1px solid black' : '1px solid white',
+                        // border:
+                        //   choice === e ? '1px solid black' : '1px solid white',
                         transform:
-                          choice === e ? "scale(1.3)" : 'none',
+                          choice === e ? "scale(1.1)" : 'none',
                         boxShadow:
                           choice === e ? "3px 3px #888888" : 'none',
                       }}
@@ -74,10 +73,10 @@ export default function UserUI({ room, users, submitResponse }) {
                       value={e}
                       color={i + 2}
                       style={{
-                        border:
-                          choice === e ? '1px solid black' : '1px solid white',
+                        // border:
+                        //   choice === e ? '1px solid black' : '1px solid white',
                         transform:
-                          choice === e ? "scale(1.3)" : 'none',
+                          choice === e ? "scale(1.1)" : 'none',
                         boxShadow:
                           choice === e ? "3px 3px #888888" : 'none',
 
@@ -162,6 +161,15 @@ const UList = styled.ul`
 	width: 60%;
 	margin: 0 auto;
 	margin-top: 12vh;
+ 
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+	  align-items: center;
+    padding: 0;
+  }
 `;
 
 const List = styled.li`
@@ -187,6 +195,13 @@ const List = styled.li`
 	justify-content: center;
 	align-items: center;
 	font-weight: ${props => props.theme.fontWeight};
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 35vw;
+    height: 12vh;
+
+  }
 `;
 
 

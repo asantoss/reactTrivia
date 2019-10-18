@@ -57,9 +57,20 @@ const DivContainer = styled.div`
 	flex-basis: 35%;
 	color: ${props => props.theme.color};
 	box-shadow: 5px 5px #888888;
+
+		@media (max-width: 768px) {
+    width: 80%;
+		margin: 0 auto;
+
+  }
+
 `;
 const Table = styled.table`
-	/* margin-top: 20px; */
+	/* @media (max-width: 768px) {
+    width: 80%;
+		margin: 0 auto;
+
+  } */
 `;
 
 const TableHead = styled.thead`
