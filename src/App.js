@@ -18,7 +18,6 @@ function App() {
 					<Route path='/rooms/:id' component={Room} />
 					<Route exact path='/signin' component={Authenticator} />
 					<Route exact path='/signup' component={Authenticator} />
-					<Route exact path='/' component={Landing} />
 				</div>
 			</Router>
 		</FirebaseContext.Provider>
