@@ -2,11 +2,12 @@ import React, { useState, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import { FirebaseContext } from '../firebase';
-import { animated, useSpring } from 'react-spring';
+import { useTransition, animated, useSpring } from 'react-spring'
 import { device } from '../pages/Mediaqueries';
+import Nav from '../NavBar/NavBar'
 
 export default function Landing(props) {
-	const [CreateRoomName, setCreateRoomName] = useState('');
+	const [state, setstate] = useState('');
 	const [roomId, setRoomId] = useState('');
 	const [redirect, setRedirect] = useState(false);
 	const [error, setError] = useState(null);
@@ -16,7 +17,7 @@ export default function Landing(props) {
 		const { isLoggedIn } = user;
 		if (isLoggedIn) {
 			fireBase
-				.doCreateRoom(CreateRoomName, user)
+				.doCreateRoom(state, props.user)
 				.then(res => {
 					error !== null && setError(null);
 					setRoomId(res);
@@ -30,35 +31,28 @@ export default function Landing(props) {
 		}
 	};
 	const joinRoom = () => {
-		setRoomId(roomId);
+		setRoomId(state);
 		setRedirect(!redirect);
 	};
-	//! DEFINING SPRING ANIMATED HERE
-	const [props2, set] = useSpring(() => ({
-		xys: [0, 0, 1],
-		config: { mass: 5, tension: 350, friction: 40 }
-	}));
+	//! DEFINING SPRING ANIMATED HERE 
+	const [props2, set] = useSpring(() => ({ xys: [0, 0, 1], config: { mass: 5, tension: 350, friction: 40 } }))
 
-	const calc = (x, y) => [
-		-(y - window.innerHeight / 2) / 20,
-		(x - window.innerWidth / 2) / 20,
-		1.1
-	];
-	const trans = (x, y, s) =>
-		`perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`;
+
+	const calc = (x, y) => [-(y - window.innerHeight / 2) / 20, (x - window.innerWidth / 2) / 20, 1.1]
+	const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
 	//!--------------------------------------------------------------------------------------------
 	return !redirect ? (
 		<ThemeProvider theme={theme}>
-			<Background
-				onMouseMove={({ clientX: x, clientY: y }) => set({ xys: calc(x, y) })}
+			<Background onMouseMove={({ clientX: x, clientY: y }) => set({ xys: calc(x, y) })}
 				onMouseLeave={() => set({ xys: [0, 0, 1] })}
-				style={{ transform: props2.xys.interpolate(trans) }}></Background>
-			<DivContainer>
+				style={{ transform: props2.xys.interpolate(trans) }}>
+			</Background>
+			<DivContainer >
 				{error && <p style={{ color: 'red' }}>{error}</p>}
 				<h1>Join or Create a Room!</h1>
 				<DivInput>
 					<Input
-						onChange={e => setCreateRoomName(e.target.value)}
+						onChange={e => setstate(e.target.value)}
 						type='text'
 						placeholder='Create a Room'
 					/>
@@ -67,7 +61,7 @@ export default function Landing(props) {
 				<br />
 				<DivInput>
 					<Input
-						onChange={e => setRoomId(e.target.value)}
+						onChange={e => setstate(e.target.value)}
 						type='text'
 						placeholder='Join a Room'
 					/>
@@ -76,12 +70,13 @@ export default function Landing(props) {
 			</DivContainer>
 		</ThemeProvider>
 	) : (
-		<Redirect to={`/rooms/${roomId}`} />
-	);
+			<Redirect to={`/rooms/${roomId}`} />
+		);
 }
 
 //! Styled Components
 const Background = styled(animated.div)`
+    
 	width: 65ch;
 	height: 45ch;
 	background: pink;
@@ -94,12 +89,16 @@ const Background = styled(animated.div)`
 	will-change: transform;
 	border: 15px solid white;
 	margin: 0 auto -25ch;
+	max-width: 100%;
+	height: 70vw;
 
-	:hover {
+	&:hover{
 		box-shadow: 0px 30px 100px -10px rgba(0, 0, 0, 0.4);
 	}
+
 	@media ${device.mobileL} {
 		max-width: 425px;
+		height: 45ch;
 	}
 `;
 
@@ -123,15 +122,17 @@ const theme = {
 	font: 'sans-serif'
 };
 
+
+
 const Button = styled.button`
 	text-transform: uppercase;
 	font-size: 11px;
 	font-weight: 600;
 	font-family: ${props => props.theme.font};
 	border: none;
-	width: 20%;
+	width: 100px;
 	background: ${props => props.theme.primary};
-	color: #ffd700;
+	color: #FFD700;
 	line-height: 0;
 	padding: 0;
 	border-radius: 20px;
@@ -142,6 +143,10 @@ const Button = styled.button`
 	cursor: pointer;
 	&:hover {
 		background: ${props => props.theme.secondary};
+	}
+	@media ${device.mobileL} {
+		max-width: 500px;
+		
 	}
 `;
 
@@ -161,6 +166,7 @@ const Input = styled.input`
 	-ms-transition: 0.2s ease all;
 	-o-transition: 0.2s ease all;
 	transition: 0.2s ease all;
+
 	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-webkit-transition-duration: 0.4s;
 	transition-duration: 0.4s;
@@ -174,3 +180,4 @@ const Input = styled.input`
 		background: ${props => props.theme.primary};
 	}
 `;
+
