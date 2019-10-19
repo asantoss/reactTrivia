@@ -2,9 +2,8 @@ import React, { useState, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import { FirebaseContext } from '../firebase';
-import { useTransition, animated, useSpring } from 'react-spring'
+import { animated, useSpring } from 'react-spring';
 import { device } from '../pages/Mediaqueries';
-import Nav from '../NavBar/NavBar'
 
 export default function Landing(props) {
 	const [state, setstate] = useState('');
@@ -34,22 +33,29 @@ export default function Landing(props) {
 		setRoomId(state);
 		setRedirect(!redirect);
 	};
-	//! DEFINING SPRING ANIMATED HERE 
-	const [props2, set] = useSpring(() => ({ xys: [0, 0, 1], config: { mass: 5, tension: 350, friction: 40 } }))
+	//! DEFINING SPRING ANIMATED HERE
+	const [props2, set] = useSpring(() => ({
+		xys: [0, 0, 1],
+		config: { mass: 5, tension: 350, friction: 40 }
+	}));
 
-
-	const calc = (x, y) => [-(y - window.innerHeight / 2) / 20, (x - window.innerWidth / 2) / 20, 1.1]
-	const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
+	const calc = (x, y) => [
+		-(y - window.innerHeight / 2) / 20,
+		(x - window.innerWidth / 2) / 20,
+		1.1
+	];
+	const trans = (x, y, s) =>
+		`perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`;
 	//!--------------------------------------------------------------------------------------------
 	return !redirect ? (
 		<ThemeProvider theme={theme}>
-			<Background onMouseMove={({ clientX: x, clientY: y }) => set({ xys: calc(x, y) })}
+			<Background
+				onMouseMove={({ clientX: x, clientY: y }) => set({ xys: calc(x, y) })}
 				onMouseLeave={() => set({ xys: [0, 0, 1] })}
-				style={{ transform: props2.xys.interpolate(trans) }}>
-			</Background>
-			<DivContainer >
+				style={{ transform: props2.xys.interpolate(trans) }}></Background>
+			<DivContainer>
 				{error && <p style={{ color: 'red' }}>{error}</p>}
-				<H1>Join or Create a Room!</H1>
+				<h1>Join or Create a Room!</h1>
 				<DivInput>
 					<Input
 						onChange={e => setstate(e.target.value)}
@@ -70,13 +76,12 @@ export default function Landing(props) {
 			</DivContainer>
 		</ThemeProvider>
 	) : (
-			<Redirect to={`/rooms/${roomId}`} />
-		);
+		<Redirect to={`/rooms/${roomId}`} />
+	);
 }
 
 //! Styled Components
 const Background = styled(animated.div)`
-    
 	width: 65ch;
 	height: 45ch;
 	background: pink;
@@ -90,12 +95,12 @@ const Background = styled(animated.div)`
 	border: 15px solid white;
 	margin: 0 auto -25ch;
 
-	$:hover{
+	:hover {
 		box-shadow: 0px 30px 100px -10px rgba(0, 0, 0, 0.4);
 	}
 	@media ${device.mobileL} {
 		max-width: 425px;
-	  }
+	}
 `;
 
 const DivContainer = styled.div`
@@ -118,8 +123,6 @@ const theme = {
 	font: 'sans-serif'
 };
 
-
-
 const Button = styled.button`
 	text-transform: uppercase;
 	font-size: 11px;
@@ -128,7 +131,7 @@ const Button = styled.button`
 	border: none;
 	width: 20%;
 	background: ${props => props.theme.primary};
-	color: #FFD700;
+	color: #ffd700;
 	line-height: 0;
 	padding: 0;
 	border-radius: 20px;
@@ -172,4 +175,3 @@ const Input = styled.input`
 		background: ${props => props.theme.primary};
 	}
 `;
-

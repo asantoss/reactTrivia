@@ -3,7 +3,7 @@ import HostView from './HostView';
 import { Redirect } from 'react-router-dom';
 import UserUi from './UserUI';
 
-import { FirebaseContext, withFirebase } from '../firebase';
+import { withFirebase } from '../firebase';
 
 // const Room = ({ user, match }) => {
 // 	const [users, setUsers] = useState([]);
@@ -88,9 +88,9 @@ class Room extends Component {
 			payload: response
 		});
 	};
-	changeHost = hostId => {
-		const { fireBase } = this.props;
-	};
+	// changeHost = hostId => {
+	// 	const { fireBase } = this.props;
+	// };
 	render() {
 		const { room, users, isLoggedIn } = this.state;
 
