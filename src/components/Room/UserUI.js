@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import Scoreboard from './Scoreboard';
 import ButtonContainer from '../containers/ButtonContainer';

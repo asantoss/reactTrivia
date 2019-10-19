@@ -37,7 +37,7 @@ export default function Scoreboard(props) {
 }
 
 const theme = {
-	background: 'rgb(233,143,26)',
+	// background: 'rgb(233,143,26)',
 	background:
 		'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)',
 	color: 'black'

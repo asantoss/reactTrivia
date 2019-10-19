@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
 import { Form, Input, Button, StyledimgC, StyledImg, Container } from './form';
 import { withFirebase } from '../firebase';
-import { Link as MaterialLink } from '@material-ui/core';
+import { Button as MaterialButton } from '@material-ui/core';
 
 class Authenticator extends Component {
 	constructor(props) {
@@ -171,16 +171,21 @@ class Authenticator extends Component {
 							{error && (
 								<p>There was an error. Please check your email & password.</p>
 							)}
-							Don't Have an<Link to='/signup'> Account?</Link>
-							Want to{' '}
-							<MaterialLink
-								onClick={() => {
-									this.setState({ user: { nickname: '' } });
-									this.handleSubmit = this.handleSignInAnon;
-								}}
-								style={{ color: 'blue' }}>
-								demo?
-							</MaterialLink>
+							<div>
+								Don't Have an<Link to='/signup'> Account?</Link>
+							</div>
+							<div>
+								Want to try a{' '}
+								<MaterialButton
+									variant='text'
+									onClick={() => {
+										this.setState({ user: { nickname: '' } });
+										this.handleSubmit = this.handleSignInAnon;
+									}}
+									style={{ color: 'blue' }}>
+									demo Account?
+								</MaterialButton>{' '}
+							</div>
 						</div>
 					</Container>
 				</Form>

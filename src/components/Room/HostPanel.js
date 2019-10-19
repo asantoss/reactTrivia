@@ -70,6 +70,7 @@ const HostPanelElement = styled.div`
 	.host_panel_actions {
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: center;
 		margin: 10px 5px;
 		> button {
 			margin: 2px;

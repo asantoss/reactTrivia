@@ -36,8 +36,7 @@ export default function Landing(props) {
 		<ThemeProvider theme={theme}>
 			<div
 				style={{
-					backgroundColor: '#1a4f6f',
-					height: '90%',
+					height: '90vh',
 					borderRadius: '10px',
 					padding: '15px 5px'
 				}}>

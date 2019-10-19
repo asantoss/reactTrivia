@@ -128,6 +128,7 @@ const CreateGameContainer = styled.div`
 			/* display: flex;
 		align-items: center; */
 			margin: auto;
+			min-height: 400px;
 		}
 		.card_container {
 			width: 50%;
@@ -138,7 +139,6 @@ const CreateGameContainer = styled.div`
 			overflow-x: auto;
 			padding: 10px;
 			align-items: center;
-			background: rgba(0, 0, 0, 0.08)
 		}
 		@media (max-width: 768px) {
 			display: flex;
@@ -150,8 +150,9 @@ const CreateGameContainer = styled.div`
 			.card_container {
 				height: fit-content;
 				width: 100%;
-				padding: 15px
+				padding: 15px;
 				flex-direction: row;
+				background: rgba(0, 0, 0, 0.08);
 				-webkit-overflow-scrolling: touch;
 				&::-webkit-scrollbar {
 					display: none;
@@ -159,6 +160,7 @@ const CreateGameContainer = styled.div`
 			}
 			.scoreboard_host {
 				width: 100%;
+				height: fit-content;
 			}
 		}
 	}
