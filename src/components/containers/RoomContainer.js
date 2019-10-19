@@ -8,8 +8,10 @@ const mapState = state => {
 };
 const mapDispatch = dispatch => ({
 	playerScore: () => {
-		debugger;
 		dispatch({ type: 'PLAYER_SCORE' });
+	},
+	redirectToSignIn: payload => {
+		dispatch({ type: 'REDIRECT_TO_SIGNIN', payload: { ...payload } });
 	}
 });
 

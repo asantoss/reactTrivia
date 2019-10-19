@@ -1,62 +1,121 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Scoreboard from './Scoreboard';
-import Question from './Question';
-import { withFirebase } from '../firebase';
+import HostView from './HostView';
+import { Redirect } from 'react-router-dom';
+import UserUi from './UserUI';
+
+import { FirebaseContext, withFirebase } from '../firebase';
+
+// const Room = ({ user, match }) => {
+// 	const [users, setUsers] = useState([]);
+// 	const [room, setRoom] = useState(null);
+// 	const [isHost, setHost] = useState(false);
+// 	const fireBase = useContext(FirebaseContext);
+// 	useEffect(() => {
+// 		const RoomUnsub = fireBase.doRoomListen('UxtXPxyiyuzNLS2OMCjA', room => {
+// 			const roomObj = room.data();
+// 			debugger;
+// 			roomObj.host.id === user.id && setHost(true);
+// 			setRoom(prevState => ({ ...prevState, ...roomObj }));
+// 		});
+// 		const userUnsub = fireBase.doUsersListen('UxtXPxyiyuzNLS2OMCjA', res => {
+// 			const usersFromDb = res.docs.map(e => e.data());
+// 			setUsers([...usersFromDb]);
+// 		});
+// 		return () => {
+// 			userUnsub();
+// 			RoomUnsub();
+// 		};
+// 	}, [setUsers, setRoom, setHost, fireBase, user]);
+// 	debugger;
+// 	return isHost ? (
+// 		<div>
+// 			<HostView room={room} users={users} />
+// 		</div>
+// 	) : (
+// 		<div>
+// 			<Game room={room} users={users} />
+// 		</div>
+// 	);
+// };
 
 class Room extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			name: '',
-			users: [],
-			currentQuestion: ''
-		};
-	}
+	state = {
+		users: [],
+		room: null,
+		isHost: false,
+		isLoggedIn: true
+	};
 	componentDidMount() {
-		const { fireBase } = this.props;
+		if (!this.props.match.params.id) return;
+		if (!this.props.user.id) {
+			this.setState({ isLoggedIn: false });
+		}
+		const { user, fireBase } = this.props;
 		const { id: roomId } = this.props.match.params;
-		debugger;
-		// *** Room data listener for updating currentQuestion.
-		fireBase.database
-			.collection('rooms')
-			.doc(roomId)
-			.onSnapshot(room => {
-				this.setState(prevState => ({ ...prevState, ...room.data() }));
-			});
-		// *** Users data listener for updating the score.
-		fireBase.database
-			.collection('rooms')
-			.doc(roomId)
-			.collection('users')
-			.onSnapshot(res => {
-				const users = res.docs.map(e => e.data());
-				this.setState(prevState => ({ ...prevState, users: [...users] }));
-			});
+		this.userUnsub = fireBase.doUsersListen(roomId, res => {
+			const usersFromDb = res.docs.map(e => e.data());
+			if (!usersFromDb.includes(user) && user.id) {
+				fireBase.doAddUserToRoom(roomId, user).then(() =>
+					this.setState(prevState => ({
+						...prevState,
+						users: [...usersFromDb]
+					}))
+				);
+			} else {
+				this.setState(prevState => ({ ...prevState, users: [...usersFromDb] }));
+			}
+		});
+		this.roomUnsub = this.props.fireBase.doRoomListen(roomId, room => {
+			const roomObj = room.data();
+			roomObj.hostId === this.props.user.id && this.setState({ host: true });
+			this.setState({ room: { ...roomObj } });
+		});
+	}
+	componentWillUnmount() {
+		this.userUnsub();
+		this.roomUnsub();
 	}
 
-	handleScore = () => {
-		const { fireBase } = this.props;
-		const { id: roomId } = this.props.match.params;
-		const { id: userId, score } = this.props.user;
-		debugger;
-		this.props.playerScore();
-		fireBase.doUpdateUser({
-			roomId,
-			userId,
-			payload: { ...this.props.user, score: score + 20 }
+	submitUserResponse = response => {
+		const { room } = this.state;
+		const { user, fireBase } = this.props;
+		if (response.userAnswer === room.currentQuestion.answer) {
+			fireBase.doUserScore({ roomId: room.id, userId: user.id, score: 20 });
+		}
+		fireBase.doAddUserResponse({
+			roomId: room.id,
+			userId: user.id,
+			payload: response
 		});
 	};
+	changeHost = hostId => {
+		const { fireBase } = this.props;
+	};
 	render() {
-		return (
-			<div>
-				{/* <h1>{this.state.name}</h1>
-				{/* <h1>{this.state.currentQuestion}?</h1> */}
-				{/* <Question question={this.state.currentQuestion} /> */}
-				<Scoreboard users={this.state.users} />
-				<button onClick={this.handleScore}>Hello</button>
-			</div>
-		);
+		const { room, users, isLoggedIn } = this.state;
+
+		if (room && isLoggedIn) {
+			return this.state.isHost ? (
+				<div>
+					<HostView room={room} users={users} />
+				</div>
+			) : (
+				<UserUi
+					room={room}
+					submitResponse={this.submitUserResponse}
+					users={users}
+				/>
+			);
+		} else if (isLoggedIn === false && room) {
+			return (
+				<Redirect
+					push
+					to={{ pathname: '/signin', state: { from: `/rooms/${room.id}` } }}
+				/>
+			);
+		} else {
+			return <div>Loading..</div>;
+		}
 	}
 }
 export default withFirebase(Room);

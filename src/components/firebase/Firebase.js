@@ -1,4 +1,4 @@
-import app from 'firebase/app';
+import app, { firestore } from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 const firebaseConfig = {
@@ -11,6 +11,11 @@ const firebaseConfig = {
 	appId: process.env.REACT_APP_FIREBASE_ID,
 	measurementId: 'G-NXHTNH66CH'
 };
+
+const urlPath =
+	process.env.NODE_ENV !== 'production'
+		? 'http://www.google.com'
+		: 'triviaGame.com';
 
 class Firebase {
 	constructor() {
@@ -25,10 +30,13 @@ class Firebase {
 	};
 
 	doSignInWithEmailAndPassword = async (email, password) => {
-		const response = await this.auth.signInWithEmailAndPassword(
-			email,
-			password
-		);
+		const response = await this.auth
+			.setPersistence('local')
+			.then(() => this.auth.signInWithEmailAndPassword(email, password));
+		return response.user;
+	};
+	doSignInAnon = async () => {
+		const response = await this.auth.signInAnonymously();
 		return response.user;
 	};
 
@@ -36,19 +44,42 @@ class Firebase {
 
 	doUpdateUserInfo = async ({ displayName }) => {
 		const user = this.auth.currentUser;
-		debugger;
 		await user.updateProfile({
 			displayName
 		});
-		debugger;
 		return user;
 	};
 	// *** Database API ***
-
+	doRoomListen = (roomId, callback) => {
+		return this.database
+			.collection('rooms')
+			.doc(roomId)
+			.onSnapshot(callback);
+	};
+	doUsersListen = (roomId, callback) => {
+		return this.database
+			.collection('rooms')
+			.doc(roomId)
+			.collection('users')
+			.onSnapshot(callback);
+	};
 	doCreateRoom = async (roomName, hostUser) => {
 		const room = await this.database.collection('rooms').doc();
-		room.collection('users').add({ ...hostUser });
-		await room.set({ name: roomName, host: { ...hostUser } });
+		room
+			.collection('users')
+			.doc(hostUser.id)
+			.set({ name: hostUser.name, id: hostUser.id, roomId: room.id });
+		await room.set({
+			id: room.id,
+			roomName: roomName,
+			hostId: hostUser.id,
+			url: `${urlPath}`,
+			currentQuestion: {
+				question: '',
+				choices: [],
+				answer: ''
+			}
+		});
 		return room.id;
 	};
 	doMatchRoomInfo = async roomId => {
@@ -73,9 +104,11 @@ class Firebase {
 			.collection('rooms')
 			.doc(roomId)
 			.collection('users')
-			.doc()
+			.doc(user.id)
 			.set({
-				...user
+				id: user.id,
+				name: user.name,
+				roomId: roomId
 			});
 	};
 	doGetUsersInRoom = async roomId => {
@@ -92,12 +125,28 @@ class Firebase {
 		console.log(rooms.docs.map(doc => doc.data()));
 	};
 	doUpdateUser = async ({ roomId, userId, payload } = {}) => {
-		this.database
+		await this.database
 			.collection('rooms')
 			.doc(roomId)
 			.collection('users')
 			.doc(userId)
 			.update({ ...payload });
+	};
+	doUserScore = async ({ roomid, userId, score } = {}) => {
+		await this.database
+			.collection('rooms')
+			.doc(roomid)
+			.collection('users')
+			.doc(userId)
+			.update({ score: firestore.FieldValue.increment(score) });
+	};
+	doAddUserResponse = async ({ roomid, userId, payload } = {}) => {
+		await this.database
+			.collection('rooms')
+			.doc(roomid)
+			.collection('users')
+			.doc(userId)
+			.update({ responses: firestore.FieldValue.arrayUnion({ ...payload }) });
 	};
 }
 

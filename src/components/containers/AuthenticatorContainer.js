@@ -1,4 +1,4 @@
-import SignUp from '../pages/SignUp';
+import Authenticator from '../pages/Authenticator';
 import { connect } from 'react-redux';
 
 const matchStatetoProps = state => {
@@ -24,4 +24,4 @@ const matchDispatchtoProps = dispatch => {
 export default connect(
 	matchStatetoProps,
 	matchDispatchtoProps
-)(SignUp);
+)(Authenticator);
