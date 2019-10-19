@@ -100,7 +100,7 @@ export default function UserUI({ room, users, submitResponse }) {
 }
 
 const theme = {
-  fontWeight: 600,
+  fontWeight: 800,
   color: 'white'
 };
 
@@ -118,6 +118,7 @@ const P = styled.p`
 	color: ${props => props.theme.color};
 	font-weight: ${props => props.theme.fontWeight};
   margin-top: 5vh;
+  border-radius: 12px;
 `;
 
 const DivContainer = styled.div`
@@ -173,18 +174,7 @@ const UList = styled.ul`
 const List = styled.li`
 	/* border: ${({ border }) =>
     border ? '1px solid black' : '1px solid white'}; */
-	background: ${({ color }) => {
-    if (color === 0) {
-      return 'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)';
-    } else if (color === 1) {
-      return 'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)';
-    } else if (color === 2) {
-      return 'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)';
-    } else {
-      return 'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)';
-    }
-  }};
-	/* padding: 2vh 5vh;  */
+	background:linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%);
 	width: 20vw;
 	height: 10vh;
 	margin: 10px 5px;
@@ -194,6 +184,7 @@ const List = styled.li`
 	align-items: center;
 	font-weight: ${props => props.theme.fontWeight};
   cursor: pointer;
+  border-radius: 12px;
 
   @media (max-width: 768px) {
     width: 35vw;

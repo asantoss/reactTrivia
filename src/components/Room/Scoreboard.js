@@ -24,7 +24,7 @@ export default function Scoreboard(props) {
 	return (
 		<ThemeProvider theme={theme}>
 			<DivContainer>
-				<Table id='socreboard' className='table striped'>
+				<Table id='socreboard'>
 					<TableHead>
 						<TableTR>
 							<TableTH>Rank</TableTH>
@@ -45,7 +45,7 @@ const theme = {
 	background: 'rgb(233,143,26)',
 	background:
 		'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)',
-	color: 'white'
+	color: 'black'
 };
 
 const DivContainer = styled.div`
@@ -56,6 +56,7 @@ const DivContainer = styled.div`
 	flex-basis: 35%;
 	color: ${props => props.theme.color};
 	box-shadow: 5px 5px #888888;
+	border-radius: 12px;
 
 		@media (max-width: 768px) {
     width: 80%;
@@ -75,6 +76,7 @@ const Table = styled.table`
 const TableHead = styled.thead`
 	background: #111;
 	color: #fff;
+	
 `;
 
 const TableTR = styled.tr`

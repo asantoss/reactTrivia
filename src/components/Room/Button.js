@@ -15,9 +15,10 @@ export default class Button extends Component {
 }
 
 const StyledButton = styled.button`
-  background-color: white; 
-  color: black; 
-  border: 2px solid #4CAF50;
+  background-color: #1F06F0; 
+  opacity: .9;
+  color: white; 
+  /* border: 2px solid #4CAF50; */
   padding: 12px 32px;
   text-align: center;
   text-decoration: none;
@@ -27,6 +28,8 @@ const StyledButton = styled.button`
   -webkit-transition-duration: 0.4s;
   transition-duration: 0.4s;
   cursor: pointer;
+  box-shadow: 3px 3px #888888;
+  border-radius: 12px;
 
   @media (max-width: 768px) {
     margin-bottom: 5vh;
