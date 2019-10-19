@@ -26,6 +26,7 @@ export default function HostPanel({
 			{...{ isRoomInputActive, isSavedGamesInputActive }}
 			className='host_panel'>
 			<h1 id='roomname'>{room.roomName}</h1>
+			{room.shortUrl && <a href={room.shortUrl}>{room.shortUrl}</a>}
 			<div className='host_panel_actions'>
 				<Button
 					variant='outlined'

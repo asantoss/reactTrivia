@@ -14,8 +14,8 @@ const firebaseConfig = {
 
 const urlPath =
 	process.env.NODE_ENV !== 'production'
-		? 'http://www.google.com'
-		: 'triviaGame.com';
+		? 'https://react-trivia-project.firebaseapp.com'
+		: 'https://react-trivia-project.firebaseapp.com';
 
 class Firebase {
 	constructor() {
@@ -77,7 +77,7 @@ class Firebase {
 		const room = await this.database.collection('rooms').add({
 			roomName: roomName,
 			hostId: hostUser.id,
-			url: `${urlPath}`,
+
 			currentQuestion: {
 				question: '',
 				choices: [],
@@ -85,7 +85,8 @@ class Firebase {
 			}
 		});
 		room.update({
-			id: room.id
+			id: room.id,
+			url: `${urlPath}/rooms/${room.id}`
 		});
 		await this.doAddUserToRoom(room.id, hostUser);
 		return room.id;
