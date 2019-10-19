@@ -13,6 +13,8 @@ export default function HostView({ room, users, sendNewRoomName }) {
 	const [answer, setAnswer] = useState('');
 	const [choices, setChoices] = useState(['', '', '', '']);
 	const [error, setError] = useState('');
+	const [savedGames, setSavedGames] = useState([]);
+	const fireBase = useContext(FirebaseContext);
 	const [isFormHidden, setFormHidden] = useState(true);
 	useEffect(() => {
 		const { currentQuestion: questionData } = room;
@@ -21,8 +23,9 @@ export default function HostView({ room, users, sendNewRoomName }) {
 				const isInGame = g.some(e => e.question === questionData.question);
 				return isInGame ? [...g] : [...g, questionData];
 			});
-	}, [setGame, room]);
-	const fireBase = useContext(FirebaseContext);
+		fireBase.doGrabGames().then(res => setSavedGames([...res]));
+	}, [setGame, room, setSavedGames, fireBase]);
+
 	const handleChoice = (e, i) => {
 		const newChoices = [...choices];
 		newChoices[i] = e.target.value;
@@ -54,6 +57,18 @@ export default function HostView({ room, users, sendNewRoomName }) {
 				currentQuestion: { ...questionObj }
 			});
 	};
+	const loadGame = game => {
+		const { questions } = game;
+
+		const gameData = questions.map(q => {
+			return {
+				question: q.question,
+				answer: q.answer,
+				choices: q.choices.map(e => e.value)
+			};
+		});
+		setGame([...gameData]);
+	};
 	return (
 		<CreateGameContainer {...{ isFormHidden }}>
 			{error && <p>{error}</p>}
@@ -62,7 +77,9 @@ export default function HostView({ room, users, sendNewRoomName }) {
 					setFormHidden,
 					isFormHidden,
 					sendNewRoomName,
-					room
+					room,
+					savedGames,
+					loadGame
 				}}>
 				<div className='question_form_container'>
 					<QuestionForm

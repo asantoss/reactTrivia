@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
-import { AddCircle, Room } from '@material-ui/icons';
-import { Button, TextField } from '@material-ui/core';
+import { AddCircle, Room, Gamepad } from '@material-ui/icons';
+import {
+	Button,
+	TextField,
+	InputLabel,
+	Select,
+	MenuItem
+} from '@material-ui/core';
 import styled from 'styled-components';
 export default function HostPanel({
 	children,
 	setFormHidden,
 	isFormHidden,
 	sendNewRoomName,
-	room
+	room,
+	savedGames,
+	loadGame
 }) {
 	const [newRoomName, setNewRoomName] = useState('');
 	const [isRoomInputActive, setRoomInput] = useState(false);
+	const [isSavedGamesInputActive, setSavedGameInput] = useState(false);
+	const [currentGame, setCurrentGame] = useState('');
 	return (
-		<HostPanelElement {...{ isRoomInputActive }} className='host_panel'>
+		<HostPanelElement
+			{...{ isRoomInputActive, isSavedGamesInputActive }}
+			className='host_panel'>
 			<h1 id='roomname'>{room.roomName}</h1>
 			<div className='host_panel_actions'>
 				<Button
@@ -21,6 +33,7 @@ export default function HostPanel({
 					onClick={() => {
 						setFormHidden(!isFormHidden);
 						setRoomInput(false);
+						setSavedGameInput(false);
 					}}>
 					Question
 				</Button>
@@ -30,8 +43,20 @@ export default function HostPanel({
 					onClick={() => {
 						setFormHidden('false');
 						setRoomInput(!isRoomInputActive);
+						setSavedGameInput(false);
 					}}>
 					Room Name
+				</Button>
+				<Button
+					variant='outlined'
+					startIcon={<Gamepad />}
+					onClick={() => {
+						setSavedGameInput(!isSavedGamesInputActive);
+						setCurrentGame();
+						setFormHidden('false');
+						setRoomInput(false);
+					}}>
+					Load Game
 				</Button>
 			</div>
 			<div className='host_panel_inputs'>
@@ -51,6 +76,37 @@ export default function HostPanel({
 						Submit
 					</Button>
 				</div>
+				<div className='saved_games'>
+					<InputLabel htmlFor='game'>Games</InputLabel>
+					<Select
+						value={currentGame || ''}
+						placeholder='Saved'
+						required
+						onChange={e => {
+							setCurrentGame(e.target.value);
+						}}
+						inputProps={{ name: 'gameSelect', id: 'game' }}>
+						{savedGames &&
+							savedGames.map((game, i) => {
+								return (
+									<MenuItem
+										key={i}
+										style={{ textTransform: 'capitalize' }}
+										value={game}>
+										{game.name}
+									</MenuItem>
+								);
+							})}
+					</Select>
+					<Button
+						variant='contained'
+						onClick={() => {
+							setSavedGameInput(false);
+							loadGame(currentGame);
+						}}>
+						Submit
+					</Button>
+				</div>
 				{children}
 			</div>
 		</HostPanelElement>
@@ -61,6 +117,12 @@ const HostPanelElement = styled.div`
 	.room_name_input {
 		display: ${({ isRoomInputActive }) =>
 			isRoomInputActive ? 'block' : 'none'};
+	}
+	.saved_games {
+		width: 200px;
+		flex-direction: column;
+		display: ${({ isSavedGamesInputActive }) =>
+			isSavedGamesInputActive ? 'flex' : 'none'};
 	}
 	@media (max-width: 768px) {
 		#roomname {

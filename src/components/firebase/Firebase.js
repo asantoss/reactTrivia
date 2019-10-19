@@ -63,6 +63,10 @@ class Firebase {
 			.collection('users')
 			.onSnapshot(callback);
 	};
+	doGrabGames = async () => {
+		const snapshot = await this.database.collection('games').get();
+		return snapshot.docs.map(doc => doc.data());
+	};
 	doUpdateRoom = (roomId, payload) => {
 		this.database
 			.collection('rooms')
