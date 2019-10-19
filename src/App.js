@@ -5,10 +5,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Landing from './components/pages/Landing';
 import Room from './components/containers/RoomContainer';
 import Firebase, { FirebaseContext } from './components/firebase';
-import Home from './components/pages/homepage';
+
 import SignUp from './components/containers/SignUpContainer';
 import Navbar from './components/NavBar/NavBar'
-import Homepage from './components/pages/Home'
+
 // import CreateRoomForm from './components/Room/CreateRoomForm';
 
 function App() {
@@ -17,10 +17,11 @@ function App() {
 			<Router>
 				<div className='App'>
 					<Navbar />
-					<Route exact path='/home' component={Homepage} />
+
 					<Route path='/rooms/:id' component={Room} />
 					<Route exact path='/signup' component={SignUp} />
 					<Route exact path='/signin' component={SignUp} />
+					<Route exact path='/' component={Landing} />
 				</div>
 			</Router>
 		</FirebaseContext.Provider>
