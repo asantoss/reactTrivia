@@ -2,8 +2,6 @@ import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 export default function Scoreboard(props) {
-	const fireBase = useContext(FirebaseContext);
-
 	const { users } = props;
 
 	const Players = users
