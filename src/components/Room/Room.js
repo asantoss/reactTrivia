@@ -28,7 +28,12 @@ class Room extends Component {
 			roomObj.hostId === this.props.user.id && this.setState({ isHost: true });
 			this.setState({ room: { ...roomObj } });
 		});
+
+		if (!this.state.users.includes(user) && user.id) {
+			fireBase.doAddUserToRoom(roomId, user);
+		}
 	}
+
 	componentWillUnmount() {
 		this.userUnsub();
 		this.roomUnsub();

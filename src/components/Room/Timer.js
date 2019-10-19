@@ -6,6 +6,7 @@ import styled from 'styled-components';
 export default class Timer extends Component {
   constructor(props) {
     super(props);
+    this.myInterval = null;
     this.state = {
       count: props.startCount,
     }
@@ -31,7 +32,7 @@ export default class Timer extends Component {
         transform: rotate(${rotation}deg) translate(0px, -${width / 2}px);
       `;
       circleArray.push(
-        <TicTac />
+        <TicTac key={i} />
       )
     }
 
@@ -62,11 +63,18 @@ export default class Timer extends Component {
     // this.setState({
     //   count: startCount
     // })
+    this.resetTimer();
 
-    //!!Set interval 
+  }
+
+  resetTimer() {
+    //!!Set interval
+    clearInterval(this.myInterval);
+    this.setState({ count: this.props.startCount });
     this.myInterval = setInterval(() => {
       if (this.state.count <= 0) {
         clearInterval(this.myInterval);
+        this.props.onTimeOut()
       }
       this.setState(prevState => ({
         count: prevState.count - 1 > 0 ? prevState.count - 1 : 0
@@ -78,6 +86,15 @@ export default class Timer extends Component {
   //!! clearInterval
   componentWillUnmount() {
     clearInterval(this.myInterval)
+  }
+
+  componentDidUpdate(prevProps) {
+
+    if (this.props.question !== prevProps.question) {
+
+      this.resetTimer();
+      this.props.onChange();
+    }
   }
 
 
