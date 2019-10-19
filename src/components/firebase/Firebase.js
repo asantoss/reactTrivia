@@ -13,7 +13,7 @@ const firebaseConfig = {
 };
 
 const urlPath =
-	process.env.NODE_ENV !== 'production'
+	process.env.NODE_ENV === 'production'
 		? 'https://react-trivia-project.firebaseapp.com'
 		: 'https://react-trivia-project.firebaseapp.com';
 
@@ -77,7 +77,6 @@ class Firebase {
 		const room = await this.database.collection('rooms').add({
 			roomName: roomName,
 			hostId: hostUser.id,
-
 			currentQuestion: {
 				question: '',
 				choices: [],
@@ -86,7 +85,7 @@ class Firebase {
 		});
 		room.update({
 			id: room.id,
-			url: `${urlPath}/rooms/${room.id}`
+			url: `https://react-trivia-project.firebaseapp.com/rooms/${room.id}`
 		});
 		await this.doAddUserToRoom(room.id, hostUser);
 		return room.id;
