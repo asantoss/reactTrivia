@@ -15,8 +15,8 @@ const SignedInLinks = props => {
 
 	return (
 		<div>
-			<Link onClick={handleLogOut}>Log Out</Link>
-			<NavLink to='/'>Room</NavLink>
+			<Link onClick={handleLogOut}>Sign Out</Link>
+			{/* <NavLink to='/'>Room</NavLink> */}
 		</div>
 	);
 };

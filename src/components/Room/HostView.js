@@ -15,17 +15,12 @@ export default function HostView({ room, users, sendNewRoomName }) {
 	const [error, setError] = useState('');
 	const [isFormHidden, setFormHidden] = useState(true);
 	useEffect(() => {
-		const { text, choices, answer } = room.currentQuestion;
-		const questionData = {
-			question: text,
-			choices: choices,
-			answer: answer
-		};
-
-		setGame(g => {
-			const isInGame = g.some(e => e.question === questionData.question);
-			return isInGame ? [...g] : [...g, questionData];
-		});
+		const { currentQuestion: questionData } = room;
+		questionData.question &&
+			setGame(g => {
+				const isInGame = g.some(e => e.question === questionData.question);
+				return isInGame ? [...g] : [...g, questionData];
+			});
 	}, [setGame, room]);
 	const fireBase = useContext(FirebaseContext);
 	const handleChoice = (e, i) => {
@@ -37,7 +32,10 @@ export default function HostView({ room, users, sendNewRoomName }) {
 
 	const addToGame = e => {
 		e.preventDefault();
-		if (game.some(e => e.question.toLowerCase() === question.toLowerCase())) {
+		if (
+			game &&
+			game.some(e => e.question.toLowerCase() === question.toLowerCase())
+		) {
 			e.target.reset();
 			return setError('Question is already created!');
 		}
@@ -53,11 +51,7 @@ export default function HostView({ room, users, sendNewRoomName }) {
 			.collection('rooms')
 			.doc(id)
 			.update({
-				currentQuestion: {
-					text: questionObj.question,
-					answer: questionObj.answer,
-					choices: questionObj.choices
-				}
+				currentQuestion: { ...questionObj }
 			});
 	};
 	return (
@@ -67,25 +61,26 @@ export default function HostView({ room, users, sendNewRoomName }) {
 				{...{
 					setFormHidden,
 					isFormHidden,
-					sendNewRoomName
+					sendNewRoomName,
+					room
 				}}>
-				<h1>{room.roomName}</h1>
+				<div className='question_form_container'>
+					<QuestionForm
+						{...{
+							addToGame,
+							question,
+							choices,
+							answer,
+							setError,
+							setGame,
+							setAnswer,
+							handleChoice,
+							setQuestion
+						}}
+					/>
+				</div>
 			</HostPanel>
-			<div className='question_form_container'>
-				<QuestionForm
-					{...{
-						addToGame,
-						question,
-						choices,
-						answer,
-						setError,
-						setGame,
-						setAnswer,
-						handleChoice,
-						setQuestion
-					}}
-				/>
-			</div>
+
 			<div className='game_status_container'>
 				<QuestionCard {...{ room, users, game, submitQuestionToDb, setGame }} />
 				<div className='scoreboard_host'>
@@ -103,7 +98,8 @@ const CreateGameContainer = styled.div`
 	justify-content: space-between;
 	flex-direction: column;
 	padding: 10px;
-	margin: auto 50px;
+	width: 85vw;
+	margin: auto;
 	.question_form_container {
 		width: 100%;
 		display: ${({ isFormHidden }) => (isFormHidden ? 'none' : 'block')};
@@ -113,9 +109,7 @@ const CreateGameContainer = styled.div`
 			align-items: center;
 			justify-content: center;
 			.Question {
-				display: flex;
-				justify-content: center;
-				margin: 50px;
+				flex-direction: column;
 			}
 			.question_choices {
 				padding: 15px;
@@ -125,16 +119,47 @@ const CreateGameContainer = styled.div`
 	}
 	.game_status_container {
 		display: flex;
-		justify-content: flex-end;
+		/* justify-content: flex-end; */
+		flex-direction: row;
+		align-items: center;
 		width: 100%;
 		.scoreboard_host {
-			width: 30%;
+			width: 60%;
 			/* display: flex;
 		align-items: center; */
 			margin: auto;
 		}
 		.card_container {
-			flex-grow: 2;
+			width: 50%;
+			display: flex;
+			flex-direction: column;
+			height: 400px;
+			flex-wrap: nowrap;
+			overflow-x: auto;
+			padding: 10px;
+			align-items: center;
+			background: rgba(0, 0, 0, 0.08)
+		}
+		@media (max-width: 768px) {
+			display: flex;
+			flex-direction: column;
+			padding: 0;
+			#roomname {
+				font-size: 3.4rem;
+			}
+			.card_container {
+				height: fit-content;
+				width: 100%;
+				padding: 15px
+				flex-direction: row;
+				-webkit-overflow-scrolling: touch;
+				&::-webkit-scrollbar {
+					display: none;
+				}
+			}
+			.scoreboard_host {
+				width: 100%;
+			}
 		}
 	}
 `;

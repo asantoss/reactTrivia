@@ -80,6 +80,9 @@ class Firebase {
 				answer: ''
 			}
 		});
+		room.update({
+			id: room.id
+		});
 		await this.doAddUserToRoom(room.id, hostUser);
 		return room.id;
 	};

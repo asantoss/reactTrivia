@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
-export const Form = styled.form`
-	border: 3px solid #f1f1f1;
-`;
+export const Form = styled.form``;
 
 export const Input = styled.input`
 	width: 250px !important;

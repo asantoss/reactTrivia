@@ -5,7 +5,6 @@ import { FirebaseContext } from '../firebase';
 
 export default function Landing(props) {
 	const [CreateRoomName, setCreateRoomName] = useState('');
-	const [RoomName, setRoomName] = useState('');
 	const [roomId, setRoomId] = useState('');
 	const [redirect, setRedirect] = useState(false);
 	const [error, setError] = useState(null);
@@ -14,7 +13,6 @@ export default function Landing(props) {
 		const { user } = props;
 		const { isLoggedIn } = user;
 		if (isLoggedIn) {
-			debugger;
 			fireBase
 				.doCreateRoom(CreateRoomName, user)
 				.then(res => {
@@ -23,7 +21,6 @@ export default function Landing(props) {
 					setRedirect(!redirect);
 				})
 				.catch(e => {
-					debugger;
 					setError('There was an error creating the room.');
 				});
 		} else {
@@ -31,34 +28,43 @@ export default function Landing(props) {
 		}
 	};
 	const joinRoom = () => {
+		debugger;
 		setRoomId(roomId);
 		setRedirect(!redirect);
 	};
 	return !redirect ? (
 		<ThemeProvider theme={theme}>
-			{error && <p style={{ color: 'red' }}>{error}</p>}
-			<H1>Join or Create a Room!</H1>
-			<DivContainer>
-				<DivInput>
-					<Input
-						onChange={e => setCreateRoomName(e.target.value)}
-						type='text'
-						placeholder='Create a Room'
-						value={CreateRoomName}
-					/>
-					<Button onClick={createRoom}>Create</Button>
-				</DivInput>
-				<br />
-				<DivInput>
-					<Input
-						onChange={e => setRoomName(e.target.value)}
-						type='text'
-						placeholder='Join a Room'
-						value={RoomName}
-					/>
-					<Button onClick={joinRoom}>Join </Button>
-				</DivInput>
-			</DivContainer>
+			<div
+				style={{
+					backgroundColor: '#1a4f6f',
+					height: '90%',
+					borderRadius: '10px',
+					padding: '15px 5px'
+				}}>
+				{error && <p style={{ color: 'red' }}>{error}</p>}
+				<H1>Join or Create a Room!</H1>
+				<DivContainer>
+					<DivInput>
+						<Input
+							onChange={e => setCreateRoomName(e.target.value)}
+							type='text'
+							placeholder='Create a Room'
+							value={CreateRoomName}
+						/>
+						<Button onClick={createRoom}>Create</Button>
+					</DivInput>
+					<br />
+					<DivInput>
+						<Input
+							onChange={e => setRoomId(e.target.value)}
+							type='text'
+							placeholder='Join a Room'
+							value={roomId}
+						/>
+						<Button onClick={joinRoom}>Join </Button>
+					</DivInput>
+				</DivContainer>
+			</div>
 		</ThemeProvider>
 	) : (
 		<Redirect to={`/rooms/${roomId}`} />
@@ -130,7 +136,7 @@ const Input = styled.input`
 	-ms-transition: 0.2s ease all;
 	-o-transition: 0.2s ease all;
 	transition: 0.2s ease all;
-
+	color: white;
 	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-webkit-transition-duration: 0.4s;
 	transition-duration: 0.4s;

@@ -26,18 +26,25 @@ const mapStateToProps = state => ({
 
 const NavigationElement = styled.div`
 	display: flex;
-	background-color: #c62828;
-	height: 10vh;
-	width: 80vw;
-	margin: auto;
+	background: #f18a0b;
+	height: 12vh;
+	width: 100%;
+	margin: 10px auto;
 	justify-content: space-between;
+	border-radius: 8px;
 	align-items: center;
+	font-size: 20px;
+	font-weight: bold;
+	padding: 10px;
 	div {
 		display: flex;
 		a {
 			margin: 10px;
 			color: white;
 			text-decoration: none;
+			&:hover {
+				opacity: 0.5;
+			}
 		}
 	}
 `;
