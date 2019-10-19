@@ -2,55 +2,7 @@ import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 export default function Scoreboard(props) {
-	// const usersHardcodedData = [
-	// 	{
-	// 		name: 'Juanito',
-	// 		id: 768763241,
-	// 		score: 95
-	// 	},
-	// 	{
-	// 		name: 'Joetta',
-	// 		id: 768763242,
-	// 		score: 93
-	// 	},
-	// 	{
-	// 		name: 'Alex',
-	// 		id: 768763243,
-	// 		score: 91
-	// 	},
-	// 	{
-	// 		name: 'Ron',
-	// 		id: 768763244,
-	// 		score: 91
-	// 	},
-	// 	{
-	// 		name: 'Tim',
-	// 		id: 768763245,
-	// 		score: 107
-	// 	},
-	// 	{
-	// 		name: 'Renna',
-	// 		id: 768763246,
-	// 		score: 56
-	// 	},
-	// 	{
-	// 		name: 'Anthony',
-	// 		id: 768763247,
-	// 		score: 106
-	// 	},
-	// 	{
-	// 		name: 'Jordan',
-	// 		id: 768763248,
-	// 		score: 100
-	// 	},
-	// 	{
-	// 		name: 'Jesus',
-	// 		id: 768763249,
-	// 		score: 96
-	// 	}
-	// ];
-	//TODO: all the user are hardcoded, needs to be set up to where i can fetch them from
-	//TODO: firebase
+	const fireBase = useContext(FirebaseContext);
 
 	const { users } = props;
 
@@ -59,7 +11,7 @@ export default function Scoreboard(props) {
 		.map((userObj, id) => {
 			const { name, score } = userObj;
 			return (
-				<TableTR>
+				<TableTR key={id}>
 					<TableTH>{1 + id}</TableTH>
 					<TableTH>{name}</TableTH>
 					<TableTH>{score}</TableTH>
@@ -70,7 +22,7 @@ export default function Scoreboard(props) {
 	return (
 		<ThemeProvider theme={theme}>
 			<DivContainer>
-				<Table id='socreboard' className='table striped'>
+				<Table id='socreboard'>
 					<TableHead>
 						<TableTR>
 							<TableTH>Rank</TableTH>
@@ -87,24 +39,33 @@ export default function Scoreboard(props) {
 }
 
 const theme = {
-	// primary: "#edb51c",
-	// secondary: "#43e838",
+	background: 'rgb(233,143,26)',
 	background:
-		'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)',
-	color: 'white'
+		'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)',
+	color: 'black'
 };
 
 const DivContainer = styled.div`
 	background: ${props => props.theme.background};
 	background: ${props => props.theme.gradientBackground};
-	margin: 0 auto;
+	margin: 5vh auto;
 	width: 100%;
 	flex-basis: 35%;
 	color: ${props => props.theme.color};
 	box-shadow: 5px 5px #888888;
+	border-radius: 12px;
+
+	@media (max-width: 768px) {
+		width: 80%;
+		margin: 5vh auto;
+	}
 `;
 const Table = styled.table`
-	/* margin-top: 20px; */
+	/* @media (max-width: 768px) {
+    width: 80%;
+		margin: 0 auto;
+
+  } */
 `;
 
 const TableHead = styled.thead`
