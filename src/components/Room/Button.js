@@ -15,7 +15,7 @@ export default class Button extends Component {
 }
 
 const StyledButton = styled.button`
-  background-color: #1F06F0; 
+  background-color: #ed1987; 
   opacity: .9;
   color: white; 
   /* border: 2px solid #4CAF50; */
@@ -41,7 +41,7 @@ const StyledButton = styled.button`
     if (disabled) {
       return '#cccccc';
     } else {
-      return '#4CAF50'
+      return '#FF00FF'
     }
   }};
  

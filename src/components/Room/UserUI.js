@@ -113,7 +113,7 @@ const P = styled.p`
 	font-size: 1.3rem;
 	margin: 0 auto;
 	margin-bottom: 10vh;
-	background: #1F06F0;
+	background: #ed1987;
   opacity: .9;
 	color: ${props => props.theme.color};
 	font-weight: ${props => props.theme.fontWeight};
