@@ -1,11 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import { FirebaseContext } from '../firebase';
 
 export default function Scoreboard(props) {
-
-	const fireBase = useContext(FirebaseContext);
-
 	const { users } = props;
 
 	const Players = users
@@ -41,8 +37,7 @@ export default function Scoreboard(props) {
 }
 
 const theme = {
-
-	background: 'rgb(233,143,26)',
+	// background: 'rgb(233,143,26)',
 	background:
 		'linear-gradient(0deg, rgba(233,143,26,0.9861878453038674) 1%, rgba(253,235,45,0.9108018207282913) 100%)',
 	color: 'black'
@@ -58,12 +53,10 @@ const DivContainer = styled.div`
 	box-shadow: 5px 5px #888888;
 	border-radius: 12px;
 
-		@media (max-width: 768px) {
-    width: 80%;
+	@media (max-width: 768px) {
+		width: 80%;
 		margin: 5vh auto;
-
-  }
-
+	}
 `;
 const Table = styled.table`
 	/* @media (max-width: 768px) {
@@ -76,7 +69,6 @@ const Table = styled.table`
 const TableHead = styled.thead`
 	background: #111;
 	color: #fff;
-	
 `;
 
 const TableTR = styled.tr`

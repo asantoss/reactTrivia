@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom'
-
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { PermIdentity, Create, HelpOutline } from '@material-ui/icons';
 const SignedOutLinks = () => {
-    return (
-        <ul className="right">
-            <li><NavLink to="/signup">Sign up</NavLink></li>
-            <li><NavLink to="/signin">Login</NavLink></li>
+	return (
+		<>
+			<NavLink to='/signup'>
+				<Create />
+				Sign up
+			</NavLink>
+			<NavLink to='/signin'>
+				<PermIdentity />
+				Sign In
+			</NavLink>
+			<NavLink to='/demo'>
+				<HelpOutline />
+				Demo
+			</NavLink>
+		</>
+	);
+};
 
-
-        </ul>
-    )
-}
-
-export default SignedOutLinks
+export default SignedOutLinks;

@@ -1,116 +1,91 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { FirebaseContext } from '../firebase';
 import styled from 'styled-components';
 import Scoreboard from './Scoreboard';
+import QuestionForm from './QuestionForm';
+import QuestionCard from './QuestionCard';
+import HostPanel from './HostPanel';
 
-export default function HostView({ room, users }) {
+export default function HostView({ room, users, sendNewRoomName }) {
 	const [game, setGame] = useState([]);
-	const [roomName, setRoomName] = useState('');
-	const [question, setQuestion] = useState({
-		text: '',
-		answer: '',
-		choices: []
-	});
-	const [choice, setChoice] = useState('');
+	// const [roomName, setRoomName] = useState('');
+	const [question, setQuestion] = useState('');
+	const [answer, setAnswer] = useState('');
+	const [choices, setChoices] = useState(['', '', '', '']);
+	const [error, setError] = useState('');
+	const [isFormHidden, setFormHidden] = useState(true);
+	useEffect(() => {
+		const { currentQuestion: questionData } = room;
+		questionData.question &&
+			setGame(g => {
+				const isInGame = g.some(e => e.question === questionData.question);
+				return isInGame ? [...g] : [...g, questionData];
+			});
+	}, [setGame, room]);
 	const fireBase = useContext(FirebaseContext);
-	const handleChange = e => {
-		setQuestion({ ...question, [e.target.name]: e.target.value });
+	const handleChoice = (e, i) => {
+		const newChoices = [...choices];
+		newChoices[i] = e.target.value;
+		setChoices([...newChoices]);
+		setError('');
 	};
-	const handleChoice = e => {
-		setChoice(e.target.value);
-	};
-	const addChoice = e => {
-		e.preventDefault();
-		setQuestion({ ...question, choices: [...question.choices, choice] });
-		setChoice('');
-	};
+
 	const addToGame = e => {
 		e.preventDefault();
-		setGame([...game, question]);
-		setQuestion({ question: '', choices: [], answer: '' });
-		setChoice({ type: 'text', value: '' });
+		if (
+			game &&
+			game.some(e => e.question.toLowerCase() === question.toLowerCase())
+		) {
+			e.target.reset();
+			return setError('Question is already created!');
+		}
+		setGame([...game, { question, choices, answer, isChoiceHidden: true }]);
+		e.target.reset();
+		setQuestion('');
+		setChoices(['', '', '', '']);
+		setAnswer('');
 	};
-	const submitQuestionToDb = question => {
+	const submitQuestionToDb = questionObj => {
 		const { id } = room;
 		fireBase.database
 			.collection('rooms')
 			.doc(id)
 			.update({
-				currentQuestion: { ...question }
+				currentQuestion: { ...questionObj }
 			});
 	};
-	const setNextHost = id => {
-		const currentHost = users.filter(user => user.id === room.hostId);
-		const currentHostIndex = users.indexOf(currentHost);
-		const nextHost = users[currentHostIndex + 1];
-		fireBase.database.collection('rooms').update({
-			hostId: nextHost.id
-		});
-	};
 	return (
-		<CreateGameContainer>
-			<div className='question_form'>
-				<div>
-					<label htmlFor='question'>Question: </label>
-					<input
-						type='text'
-						id='question'
-						name='text'
-						value={question.text}
-						onChange={handleChange}
+		<CreateGameContainer {...{ isFormHidden }}>
+			{error && <p>{error}</p>}
+			<HostPanel
+				{...{
+					setFormHidden,
+					isFormHidden,
+					sendNewRoomName,
+					room
+				}}>
+				<div className='question_form_container'>
+					<QuestionForm
+						{...{
+							addToGame,
+							question,
+							choices,
+							answer,
+							setError,
+							setGame,
+							setAnswer,
+							handleChoice,
+							setQuestion
+						}}
 					/>
-					<label htmlFor='answer'>Answer: </label>
-					<input
-						id='answer'
-						name='answer'
-						value={question.answer}
-						onChange={handleChange}
-					/>
-					<button onClick={addToGame} type='submit'>
-						Add Question
-					</button>
 				</div>
-				<div>
-					<div>
-						{question.choices.map(choice => {
-							return <p>{choice}</p>;
-						})}
-					</div>
-					<label htmlFor='choice'>
-						Choice {question.choices.length > 0 && question.choices.length + 1}
-					</label>
-					<input
-						type='text'
-						name='value'
-						id='choice'
-						onChange={handleChoice}
-						value={choice}
-					/>
-					<button onClick={addChoice}>Add Choice</button>
+			</HostPanel>
+
+			<div className='game_status_container'>
+				<QuestionCard {...{ room, users, game, submitQuestionToDb, setGame }} />
+				<div className='scoreboard_host'>
+					<Scoreboard users={users} />
 				</div>
-			</div>
-			<div>
-				<li value={choice}>{choice}</li>
-				{game.map((questionObj, i) => {
-					const { text, choices } = questionObj;
-					return (
-						<div key={i}>
-							<h1>{text}</h1>
-							{choices.map((choice, i) => (
-								<p key={i}>{choice}</p>
-							))}
-							<button onClick={() => submitQuestionToDb(questionObj)}>
-								Submit to DB
-							</button>
-						</div>
-					);
-				})}
-				{users.map(e => {
-					if (e.responses) {
-						return <p>{e.responses[0].userAnswer}</p>;
-					}
-				})}
-				<Scoreboard users={users} />
 			</div>
 		</CreateGameContainer>
 	);
@@ -118,15 +93,75 @@ export default function HostView({ room, users }) {
 
 const CreateGameContainer = styled.div`
 	display: flex;
+	flex-wrap: wrap;
+	text-align: center;
 	justify-content: space-between;
 	flex-direction: column;
+	padding: 10px;
+	width: 85vw;
 	margin: auto;
-	div {
-		margin: 20px 0;
+	.question_form_container {
+		width: 100%;
+		display: ${({ isFormHidden }) => (isFormHidden ? 'none' : 'block')};
+		.question_form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			.Question {
+				flex-direction: column;
+			}
+			.question_choices {
+				padding: 15px;
+				display: flex;
+			}
+		}
 	}
-	.question_form {
+	.game_status_container {
 		display: flex;
+		/* justify-content: flex-end; */
+		flex-direction: row;
 		align-items: center;
-		justify-content: space-evenly;
+		width: 100%;
+		.scoreboard_host {
+			width: 60%;
+			/* display: flex;
+		align-items: center; */
+			margin: auto;
+			min-height: 400px;
+		}
+		.card_container {
+			width: 50%;
+			display: flex;
+			flex-direction: column;
+			height: 400px;
+			flex-wrap: nowrap;
+			overflow-x: auto;
+			padding: 10px;
+			align-items: center;
+		}
+		@media (max-width: 768px) {
+			display: flex;
+			flex-direction: column;
+			padding: 0;
+			#roomname {
+				font-size: 3.4rem;
+			}
+			.card_container {
+				height: fit-content;
+				width: 100%;
+				padding: 15px;
+				flex-direction: row;
+				background: rgba(0, 0, 0, 0.08);
+				-webkit-overflow-scrolling: touch;
+				&::-webkit-scrollbar {
+					display: none;
+				}
+			}
+			.scoreboard_host {
+				width: 100%;
+				height: fit-content;
+			}
+		}
 	}
 `;

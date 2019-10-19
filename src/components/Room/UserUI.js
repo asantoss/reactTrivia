@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import { FirebaseContext } from '../firebase';
 import Scoreboard from './Scoreboard';
 import ButtonContainer from '../containers/ButtonContainer';
 import TimerContainer from '../containers/TimerContainer';
@@ -10,7 +9,6 @@ export default function UserUI({ room, users, submitResponse }) {
   const [isDisabled, setDisabled] = useState(false);
   // const timer = 30
 
-
   const pickChoice = e => {
     setChoice(e);
   };
@@ -18,7 +16,7 @@ export default function UserUI({ room, users, submitResponse }) {
   const submitChoice = () => {
     const { currentQuestion } = room;
     const response = {
-      question: currentQuestion.text,
+      question: currentQuestion.question,
       userAnswer: choice,
       correctAnwer: currentQuestion.answer
     };
@@ -27,19 +25,22 @@ export default function UserUI({ room, users, submitResponse }) {
     if (isDisabled) {
       return;
     }
-    setDisabled(true)
+    setDisabled(true);
   };
 
-  const { choices } = room.currentQuestion
+  const { choices } = room.currentQuestion;
   return (
     <ThemeProvider theme={theme}>
       <DivContainer>
         <DivMain>
           <div className='question'>
-            <P>{room.currentQuestion.text}</P>
+            <P>{room.currentQuestion.question}</P>
           </div>
 
-          <TimerContainer startCount={30} question={room.currentQuestion.text} />
+          <TimerContainer
+            startCount={30}
+            question={room.currentQuestion.question}
+          />
 
           <div className='answers'>
             <UList>
@@ -53,10 +54,8 @@ export default function UserUI({ room, users, submitResponse }) {
                       style={{
                         // border:
                         //   choice === e ? '1px solid black' : '1px solid white',
-                        transform:
-                          choice === e ? "scale(1.1)" : 'none',
-                        boxShadow:
-                          choice === e ? "3px 3px #888888" : 'none',
+                        transform: choice === e ? 'scale(1.1)' : 'none',
+                        boxShadow: choice === e ? '3px 3px #888888' : 'none'
                       }}
                       onClick={() => pickChoice(e)}>
                       {e}
@@ -75,12 +74,8 @@ export default function UserUI({ room, users, submitResponse }) {
                       style={{
                         // border:
                         //   choice === e ? '1px solid black' : '1px solid white',
-                        transform:
-                          choice === e ? "scale(1.1)" : 'none',
-                        boxShadow:
-                          choice === e ? "3px 3px #888888" : 'none',
-
-
+                        transform: choice === e ? 'scale(1.1)' : 'none',
+                        boxShadow: choice === e ? '3px 3px #888888' : 'none'
                       }}
                       onClick={() => pickChoice(e)}>
                       {e}
@@ -105,7 +100,6 @@ const theme = {
 };
 
 const P = styled.p`
-	
 	width: 90%;
 	padding: 20px;
 	text-align: center;
@@ -117,17 +111,16 @@ const P = styled.p`
   opacity: .9;
 	color: ${props => props.theme.color};
 	font-weight: ${props => props.theme.fontWeight};
-  margin-top: 5vh;
-  border-radius: 12px;
+	margin-top: 5vh;
+	border-radius: 12px;
 `;
 
 const DivContainer = styled.div`
-  
 	display: flex;
 	flex-direction: row;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
+	@media (max-width: 768px) {
+		flex-direction: column;
+	}
 `;
 
 const DivMain = styled.div`
@@ -139,17 +132,12 @@ export const DivScoreboard = styled.div`
 	background: black;
 	color: white;
 	/* height: 100vh; */
-  
-  @media (max-width: 768px) {
-    flex-basis: 80%;
-    margin: 0 auto;
-  }
 
-  
+	@media (max-width: 768px) {
+		flex-basis: 80%;
+		margin: 0 auto;
+	}
 `;
-
-
-
 
 const UList = styled.ul`
 	list-style: none;
@@ -159,16 +147,16 @@ const UList = styled.ul`
 	width: 60%;
 	margin: 0 auto;
 	margin-top: 12vh;
-  margin-bottom: 5vh;
-  justify-content: center;
+	margin-bottom: 5vh;
+	justify-content: center;
 
-  @media (max-width: 768px) {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-	  align-items: center;
-    padding: 0;
-  }
+	@media (max-width: 768px) {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		padding: 0;
+	}
 `;
 
 const List = styled.li`
@@ -192,8 +180,3 @@ const List = styled.li`
 
   }
 `;
-
-
-
-
-

@@ -1,16 +1,20 @@
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import React, { Component } from 'react';
 
 export default class Button extends Component {
   render() {
     const { buttonDisable } = this.props.room;
     return (
-      <StyledButton {...this.props} onClick={
-        () => { this.props.handleClick(); this.props.onClick(); }
-      } disabled={buttonDisable}>
-        {!buttonDisable ? "Submit" : "Submitted"}
+      <StyledButton
+        {...this.props}
+        onClick={() => {
+          this.props.handleClick();
+          this.props.onClick();
+        }}
+        disabled={buttonDisable}>
+        {!buttonDisable ? 'Submit' : 'Submitted'}
       </StyledButton>
-    )
+    );
   }
 }
 
