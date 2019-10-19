@@ -70,10 +70,7 @@ class Firebase {
 			.update({ ...payload });
 	};
 	doCreateRoom = async (roomName, hostUser) => {
-		const room = await this.database.collection('rooms').doc();
-		await this.doAddUserToRoom(room.id, hostUser.id);
-		await room.set({
-			id: room.id,
+		const room = await this.database.collection('rooms').add({
 			roomName: roomName,
 			hostId: hostUser.id,
 			url: `${urlPath}`,
@@ -83,6 +80,7 @@ class Firebase {
 				answer: ''
 			}
 		});
+		await this.doAddUserToRoom(room.id, hostUser);
 		return room.id;
 	};
 	doMatchRoomInfo = async roomId => {

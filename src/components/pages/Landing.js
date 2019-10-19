@@ -4,7 +4,8 @@ import styled, { ThemeProvider } from 'styled-components';
 import { FirebaseContext } from '../firebase';
 
 export default function Landing(props) {
-	const [state, setstate] = useState('');
+	const [CreateRoomName, setCreateRoomName] = useState('');
+	const [RoomName, setRoomName] = useState('');
 	const [roomId, setRoomId] = useState('');
 	const [redirect, setRedirect] = useState(false);
 	const [error, setError] = useState(null);
@@ -13,14 +14,16 @@ export default function Landing(props) {
 		const { user } = props;
 		const { isLoggedIn } = user;
 		if (isLoggedIn) {
+			debugger;
 			fireBase
-				.doCreateRoom(state, props.user)
+				.doCreateRoom(CreateRoomName, user)
 				.then(res => {
 					error !== null && setError(null);
 					setRoomId(res);
 					setRedirect(!redirect);
 				})
 				.catch(e => {
+					debugger;
 					setError('There was an error creating the room.');
 				});
 		} else {
@@ -28,7 +31,7 @@ export default function Landing(props) {
 		}
 	};
 	const joinRoom = () => {
-		setRoomId(state);
+		setRoomId(roomId);
 		setRedirect(!redirect);
 	};
 	return !redirect ? (
@@ -38,18 +41,20 @@ export default function Landing(props) {
 			<DivContainer>
 				<DivInput>
 					<Input
-						onChange={e => setstate(e.target.value)}
+						onChange={e => setCreateRoomName(e.target.value)}
 						type='text'
 						placeholder='Create a Room'
+						value={CreateRoomName}
 					/>
 					<Button onClick={createRoom}>Create</Button>
 				</DivInput>
 				<br />
 				<DivInput>
 					<Input
-						onChange={e => setstate(e.target.value)}
+						onChange={e => setRoomName(e.target.value)}
 						type='text'
 						placeholder='Join a Room'
+						value={RoomName}
 					/>
 					<Button onClick={joinRoom}>Join </Button>
 				</DivInput>

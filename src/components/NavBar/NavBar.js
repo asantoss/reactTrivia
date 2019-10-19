@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import SignedInLinks from '../containers/LogoutContainer';
@@ -10,7 +10,7 @@ class Navbar extends Component {
 		const { user } = this.props;
 
 		return (
-			<NavigationElement className='nav-wrapper red darken-3'>
+			<NavigationElement>
 				<div>
 					<Link to='/home'>Home</Link>
 				</div>
