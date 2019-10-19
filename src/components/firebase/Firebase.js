@@ -63,14 +63,14 @@ class Firebase {
 			.collection('users')
 			.onSnapshot(callback);
 	};
+	doUpdateRoom = (roomId, payload) => {
+		this.database
+			.collection('rooms')
+			.doc(roomId)
+			.update({ ...payload });
+	};
 	doCreateRoom = async (roomName, hostUser) => {
-		const room = await this.database.collection('rooms').doc();
-		room
-			.collection('users')
-			.doc(hostUser.id)
-			.set({ name: hostUser.name, id: hostUser.id, roomId: room.id });
-		await room.set({
-			id: room.id,
+		const room = await this.database.collection('rooms').add({
 			roomName: roomName,
 			hostId: hostUser.id,
 			url: `${urlPath}`,
@@ -80,6 +80,10 @@ class Firebase {
 				answer: ''
 			}
 		});
+		room.update({
+			id: room.id
+		});
+		await this.doAddUserToRoom(room.id, hostUser);
 		return room.id;
 	};
 	doMatchRoomInfo = async roomId => {
@@ -100,7 +104,7 @@ class Firebase {
 		};
 	};
 	doAddUserToRoom = async (roomId, user) => {
-		await this.database
+		return await this.database
 			.collection('rooms')
 			.doc(roomId)
 			.collection('users')
@@ -108,7 +112,8 @@ class Firebase {
 			.set({
 				id: user.id,
 				name: user.name,
-				roomId: roomId
+				roomId: roomId,
+				score: 0
 			});
 	};
 	doGetUsersInRoom = async roomId => {
@@ -132,18 +137,18 @@ class Firebase {
 			.doc(userId)
 			.update({ ...payload });
 	};
-	doUserScore = async ({ roomid, userId, score } = {}) => {
-		await this.database
+	doUserScore = async ({ roomId, userId, score } = {}) => {
+		return await this.database
 			.collection('rooms')
-			.doc(roomid)
+			.doc(roomId)
 			.collection('users')
 			.doc(userId)
 			.update({ score: firestore.FieldValue.increment(score) });
 	};
-	doAddUserResponse = async ({ roomid, userId, payload } = {}) => {
-		await this.database
+	doAddUserResponse = async ({ roomId, userId, payload } = {}) => {
+		return await this.database
 			.collection('rooms')
-			.doc(roomid)
+			.doc(roomId)
 			.collection('users')
 			.doc(userId)
 			.update({ responses: firestore.FieldValue.arrayUnion({ ...payload }) });

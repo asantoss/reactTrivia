@@ -6,7 +6,7 @@ import { animated, useSpring } from 'react-spring';
 import { device } from '../pages/Mediaqueries';
 
 export default function Landing(props) {
-	const [state, setstate] = useState('');
+	const [CreateRoomName, setCreateRoomName] = useState('');
 	const [roomId, setRoomId] = useState('');
 	const [redirect, setRedirect] = useState(false);
 	const [error, setError] = useState(null);
@@ -16,7 +16,7 @@ export default function Landing(props) {
 		const { isLoggedIn } = user;
 		if (isLoggedIn) {
 			fireBase
-				.doCreateRoom(state, props.user)
+				.doCreateRoom(CreateRoomName, user)
 				.then(res => {
 					error !== null && setError(null);
 					setRoomId(res);
@@ -30,7 +30,7 @@ export default function Landing(props) {
 		}
 	};
 	const joinRoom = () => {
-		setRoomId(state);
+		setRoomId(roomId);
 		setRedirect(!redirect);
 	};
 	//! DEFINING SPRING ANIMATED HERE
@@ -58,7 +58,7 @@ export default function Landing(props) {
 				<h1>Join or Create a Room!</h1>
 				<DivInput>
 					<Input
-						onChange={e => setstate(e.target.value)}
+						onChange={e => setCreateRoomName(e.target.value)}
 						type='text'
 						placeholder='Create a Room'
 					/>
@@ -67,7 +67,7 @@ export default function Landing(props) {
 				<br />
 				<DivInput>
 					<Input
-						onChange={e => setstate(e.target.value)}
+						onChange={e => setRoomId(e.target.value)}
 						type='text'
 						placeholder='Join a Room'
 					/>
@@ -161,7 +161,6 @@ const Input = styled.input`
 	-ms-transition: 0.2s ease all;
 	-o-transition: 0.2s ease all;
 	transition: 0.2s ease all;
-
 	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-webkit-transition-duration: 0.4s;
 	transition-duration: 0.4s;

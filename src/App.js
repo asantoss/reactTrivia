@@ -14,8 +14,9 @@ function App() {
 					<NavBar />
 					<Route exact path='/' component={Landing} />
 					<Route path='/rooms/:id' component={Room} />
-					<Route exact path='/signup' component={Authenticator} />
+					<Route exact path='/demo' component={Authenticator} />
 					<Route exact path='/signin' component={Authenticator} />
+					<Route exact path='/signup' component={Authenticator} />
 				</div>
 			</Router>
 		</FirebaseContext.Provider>
