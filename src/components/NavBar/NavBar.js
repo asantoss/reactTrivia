@@ -19,7 +19,7 @@ function Navbar(props) {
 			isopen={window.innerWidth < 768 && state ? 1 : 0}>
 			<div className='nav_logo'>
 				<Link to='/'>
-					<Home onClick={() => window.innerWidth < 768 && setState(!state)} />
+					<Home onClick={() => window.innerWidth < 768 && setState(false)} />
 				</Link>
 				{window.innerWidth < 768 && state ? (
 					<Close

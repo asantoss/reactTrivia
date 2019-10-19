@@ -119,6 +119,7 @@ const HostPanelElement = styled.div`
 			isRoomInputActive ? 'block' : 'none'};
 	}
 	.saved_games {
+		margin: auto;
 		width: 200px;
 		flex-direction: column;
 		display: ${({ isSavedGamesInputActive }) =>
