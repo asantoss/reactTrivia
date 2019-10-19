@@ -1,33 +1,48 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import SignedInLinks from '../containers/LogoutContainer';
 import SignedOutLinks from './SignedOutLinks';
+import { useSpring, animated } from 'react-spring';
 import styled from 'styled-components';
+import { Menu, Home, Close } from '@material-ui/icons';
 
-class Navbar extends Component {
-	render() {
-		const { user } = this.props;
-
-		return (
-			<NavigationElement>
-				<div>
-					<Link to='/home'>Home</Link>
-				</div>
+function Navbar(props) {
+	const [state, setState] = useState(false);
+	const { user } = props;
+	const animatedNavProps = useSpring({
+		height: window.innerWidth && state ? '45vh' : '12vh'
+	});
+	return (
+		<NavigationElement
+			style={animatedNavProps}
+			isopen={window.innerWidth < 768 && state ? 1 : 0}>
+			<div className='nav_logo'>
+				<Link to='/'>
+					<Home />
+				</Link>
+				{state ? (
+					<Close className='burger' onClick={() => setState(!state)} />
+				) : (
+					<Menu className='burger' onClick={() => setState(!state)} />
+				)}
+			</div>
+			<animated.div className='nav_links' onClick={() => setState(!state)}>
 				{user.isLoggedIn ? <SignedInLinks /> : <SignedOutLinks />}
-			</NavigationElement>
-		);
-	}
+			</animated.div>
+		</NavigationElement>
+	);
 }
 
 const mapStateToProps = state => ({
 	...state
 });
 
-const NavigationElement = styled.div`
+const NavigationElement = styled(animated.div)`
 	display: flex;
 	background: #f18a0b;
-	height: 12vh;
+	height: 15vh;
+	opacity: 1;
 	width: 100%;
 	margin: 10px auto;
 	justify-content: space-between;
@@ -38,12 +53,60 @@ const NavigationElement = styled.div`
 	padding: 10px;
 	div {
 		display: flex;
+		align-items: center;
 		a {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
 			margin: 10px;
 			color: white;
 			text-decoration: none;
-			&:hover {
+			:hover {
 				opacity: 0.5;
+			}
+		}
+	}
+	.burger {
+		display: none;
+		color: white;
+		font-size: 2.5rem;
+		&:hover {
+			cursor: pointer;
+			opacity: 0.7;
+		}
+	}
+	.nav_logo {
+		svg {
+			font-size: 2.5rem;
+		}
+	}
+	@media (max-width: 768px) {
+		flex-direction: column;
+		justify-content: flex-start;
+		padding: 10px;
+		.burger {
+			display: block;
+		}
+		.nav_logo {
+			font-size: 2.5rem;
+			width: 100%;
+			justify-content: space-between;
+			align-items: center;
+			align-self: center;
+			margin: 5px;
+		}
+		.nav_links {
+			flex-direction: column;
+			width: 100%;
+			display: ${({ isopen }) => (isopen ? 'flex' : 'none')};
+			a {
+				color: white;
+				display: flex;
+				padding: 10px;
+				justify-content: space-between;
+				width: 100%;
+				margin: 2px;
+				border-top: 2px solid white;
 			}
 		}
 	}

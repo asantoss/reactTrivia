@@ -16,7 +16,7 @@ export default function UserUI({ room, users, submitResponse }) {
 	const submitChoice = () => {
 		const { currentQuestion } = room;
 		const response = {
-			question: currentQuestion.text,
+			question: currentQuestion.question,
 			userAnswer: choice,
 			correctAnwer: currentQuestion.answer
 		};
@@ -34,12 +34,12 @@ export default function UserUI({ room, users, submitResponse }) {
 			<DivContainer>
 				<DivMain>
 					<div className='question'>
-						<P>{room.currentQuestion.text}</P>
+						<P>{room.currentQuestion.question}</P>
 					</div>
 
 					<TimerContainer
 						startCount={30}
-						question={room.currentQuestion.text}
+						question={room.currentQuestion.question}
 					/>
 
 					<div className='answers'>

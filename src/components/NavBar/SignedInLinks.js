@@ -13,12 +13,7 @@ const SignedInLinks = props => {
 		props.logout();
 	};
 
-	return (
-		<div>
-			<Link onClick={handleLogOut}>Sign Out</Link>
-			{/* <NavLink to='/'>Room</NavLink> */}
-		</div>
-	);
+	return <Link onClick={handleLogOut}>Sign Out</Link>;
 };
 
 export default withFirebase(SignedInLinks);

@@ -125,14 +125,18 @@ class Authenticator extends Component {
 		) : (
 			<ThemeProvider theme={theme}>
 				<Form onSubmit={this.handleSubmit}>
-					<StyledimgC>
+					{/* <StyledimgC>
 						<StyledImg src='triviaimg.png' alt='Trivia' />
-					</StyledimgC>
+					</StyledimgC> */}
+					<h5>Welcome to TriviaDOM</h5>
 					<Container>
 						{//Create an array from all of the keys in state
 						Object.keys(this.state.user).map((stateKey, i) => {
 							return (
-								<div key={i} style={{ textTransform: 'capitalize' }}>
+								<div
+									className='input'
+									key={i}
+									style={{ textTransform: 'capitalize' }}>
 									<label htmlFor={stateKey}>
 										<b>{stateKey}</b>
 									</label>

@@ -28,7 +28,6 @@ export default function Landing(props) {
 		}
 	};
 	const joinRoom = () => {
-		debugger;
 		setRoomId(roomId);
 		setRedirect(!redirect);
 	};
@@ -135,7 +134,6 @@ const Input = styled.input`
 	-ms-transition: 0.2s ease all;
 	-o-transition: 0.2s ease all;
 	transition: 0.2s ease all;
-	color: white;
 	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-webkit-transition-duration: 0.4s;
 	transition-duration: 0.4s;
