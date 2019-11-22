@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import Scoreboard from './Scoreboard';
 import ButtonContainer from '../containers/ButtonContainer';
 import TimerContainer from '../containers/TimerContainer';
+import { FirebaseContext } from '../firebase/index';
 
 export default function UserUI({ room, users, submitResponse }) {
 	const [choice, setChoice] = useState('');
 	const [isDisabled, setDisabled] = useState(false);
 	// const timer = 30
-
+	const fireBase = useContext(FirebaseContext);
 	const pickChoice = e => {
 		setChoice(e);
 	};

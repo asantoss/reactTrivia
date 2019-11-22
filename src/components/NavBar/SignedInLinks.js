@@ -7,9 +7,7 @@ const SignedInLinks = props => {
 	//Todo: I am importing the firbase functions in order for the user to be able to logOut
 	const firebase = useContext(FirebaseContext);
 	const handleLogOut = async () => {
-		console.log('HERE I AM!!!!!!!!!!!!!!!!');
 		await firebase.doSignOut();
-		console.log(props);
 		props.logout();
 	};
 

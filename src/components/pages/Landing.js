@@ -4,6 +4,8 @@ import styled, { ThemeProvider } from 'styled-components';
 import { FirebaseContext } from '../firebase';
 import { animated, useSpring } from 'react-spring';
 import { device } from '../pages/Mediaqueries';
+import { IconButton } from '@material-ui/core';
+import { AddCircleOutline } from '@material-ui/icons';
 
 export default function Landing(props) {
 	const [state, setstate] = useState('');
@@ -62,7 +64,9 @@ export default function Landing(props) {
 						type='text'
 						placeholder='Create a Room'
 					/>
-					<Button onClick={createRoom}>Create</Button>
+					<IconButton onClick={createRoom}>
+						<AddCircleOutline />
+					</IconButton>
 				</DivInput>
 				<br />
 				<DivInput>
@@ -71,7 +75,9 @@ export default function Landing(props) {
 						type='text'
 						placeholder='Join a Room'
 					/>
-					<Button onClick={joinRoom}>Join </Button>
+					<IconButton onClick={joinRoom}>
+						<AddCircleOutline />
+					</IconButton>
 				</DivInput>
 			</DivContainer>
 		</ThemeProvider>
@@ -127,38 +133,38 @@ const theme = {
 	font: 'sans-serif'
 };
 
-const Button = styled.button`
-	text-transform: uppercase;
-	font-size: 11px;
-	font-weight: 600;
-	font-family: ${props => props.theme.font};
-	border: none;
-	width: 200px;
-	background: ${props => props.theme.primary};
-	color: #ffd700;
-	line-height: 0;
-	padding: 0;
-	border-radius: 20px;
-	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	-webkit-transition-duration: 0.4s;
-	transition-duration: 0.4s;
+// const Button = styled.button`
+// 	text-transform: uppercase;
+// 	font-size: 11px;
+// 	font-weight: 600;
+// 	font-family: ${props => props.theme.font};
+// 	border: none;
+// 	width: 200px;
+// 	background: ${props => props.theme.primary};
+// 	color: #ffd700;
+// 	line-height: 0;
+// 	padding: 0;
+// 	border-radius: 20px;
+// 	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+// 	-webkit-transition-duration: 0.4s;
+// 	transition-duration: 0.4s;
 
-	cursor: pointer;
-	&:hover {
-		background: ${props => props.theme.secondary};
-	}
-	@media ${device.mobileL} {
-		max-width: 500px;
-	}
-`;
+// 	cursor: pointer;
+// 	&:hover {
+// 		background: ${props => props.theme.secondary};
+// 	}
+// 	@media ${device.mobileL} {
+// 		max-width: 500px;
+// 	}
+// `;
 
 const Input = styled.input`
 	margin: 15px 0;
 	padding: 15px 10px;
-	width: 60%;
 	outline: none;
 	border: 1px solid #bbb;
 	border-radius: 20px;
+	min-width: 200px;
 	display: inline-block;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -168,7 +174,6 @@ const Input = styled.input`
 	-ms-transition: 0.2s ease all;
 	-o-transition: 0.2s ease all;
 	transition: 0.2s ease all;
-
 	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	-webkit-transition-duration: 0.4s;
 	transition-duration: 0.4s;

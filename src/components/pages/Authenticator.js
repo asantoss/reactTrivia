@@ -186,7 +186,7 @@ class Authenticator extends Component {
 										this.setState({ user: { nickname: '' } });
 										this.handleSubmit = this.handleSignInAnon;
 									}}
-									style={{ color: 'blue' }}>
+									style={{ color: 'lightblue' }}>
 									demo Account?
 								</MaterialButton>{' '}
 							</div>
